@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="domino.css">
+  <title>DOMINÓ</title>
+  <link rel = "icon" href = "https://cdn.icon-icons.com/icons2/325/PNG/256/Letter-D-icon_34762.png" type = "image/x-icon">
+</head>
+<body>
+  <!-- Título -->
+  <div class="center">
+    <h1> Domino Game</h1>
+  </div>
+
+  <div id = "logout" >
+    <button id="buttonLogout" onclick = "logoutFunc();resetScores()">Logout</button>
+    <p id = "userLogout"> </p>
+  </div>
+
+  <div id = "loginContainer">
+    <form name = "login" method = "post">
+      <pre class = "loginText">Username:<input type = "text" name = "username" class = "textBoxes" id="user"/></pre>
+      <pre class = "loginText">Password:<input type = "password" name = "password" class = "textBoxes" id = "pass"/></pre>
+      <input id = "loginButton" type="button" name="loginCheck" value="Entrar " onclick = "loginFunc();getUser()" />
+    </form>
+  </div>
+
+  <div id = "gameBoard">
+    <div id = "Dificulty">
+      <button class = "buttonDif" id = "easy" onclick="easyMode()"> EASY </button>
+      <button class = "buttonDif" id = "medium" onclick="mediumMode()"> MEDIUM </button>
+      <button class = "buttonDif" id = "hard" onclick="hardMode()"> HARD </button>
+    </div>
+    <button id = "startGame" onclick = "start()"> START </button>
+    <div id = "board2">
+      <div id="warnings"> </div>
+      <div id="PCHand"></div>
+      <div id="Board"></div>
+      <div id="PiecePos">
+        <button id = "left" onclick = "playpieceplayer('0')"> Left </button>
+        <button id = "right" onclick = "playpieceplayer('1')"> Right </button>
+      </div>
+      <div id="PlayerHand"></div>
+      <div id="Deck"></div>
+    </div>
+  </div>
+
+  <div id="leftContainer">
+    <div id = "playMenu">
+        <button id="button1x1">1 vs 1</button>
+        <button id="button1xpc" onclick = "disappear()">1 vs PC</button>
+    </div>
+  </div>
+  <!-- Right Box -->
+  <div id="rightContainer">
+    <button id="buttonRules" onclick="rulesButton()">Rules</button>
+    <div id="myModal" class = "modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id = "rulesTitle" class = "centerModal">Rules</p>
+        <pre class = "rulesText">
+          Durante o jogo os jogadores jogam alternadamente.
+          Peças jogadas formam uma fila.
+          Cada nova peça é colocada numa das extremidades da fila.
+          Valor de duas peças justapostas tem de ser o mesmo.
+          Se um jogador não tiver peça para jogar tem ir ao monte.
+          Vai retirando peças do monte até que o possa jogar.
+          Não havendo peças no monte o jogador pode passar a sua vez.
+          Só com o monte vazio é que se pode passar.
+          Cada peça é retangular, com 2 partes quadradas.
+          Cada quadrado tem um valor de 0 a 6 representado por pontos.
+          Existem todas as combinações possíveis de 2 valores de 0 a 6.
+          Não existem peças repetidas, por exemplo:
+             • a peça 🁇 só existe uma vez.
+             • a peça 🁇 e 🀻 são a mesma.
+          Portanto, no total há exatamente 28 peças.
+        </pre>
+      </div>
+    </div>
+    <button id = "scores" onclick = "scoresButton();printScores()"> Scores </button>
+    <div id="myScores" class = "modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" >&times;</span>
+        <p class = "centerModal">HighScores</p>
+        <div id = "scoreTable">
+          <table>
+            <tr>
+              <th>USER</th>
+              <th>VICTORYS</th>
+              <th>SCORE</th>
+            </tr>
+            <tr>
+              <th id = "namePoints"> </th>
+              <th id = "victorys"> </th>
+              <th id = "valuePoints"> </th>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id = "forfeit" >
+      <button id = "giveUp" onclick="giveGame()"> GiveUp </button>
+      <button id = "buttonPass" onclick = "passTurn()"> Passar </button>
+      <button id=  "buttonDeck" onclick = "getDeck()"> Deck </button>
+    </div>
+    <script src = "teste.js">
+    </script>
+
+  </div>
+  <script src = "domino.js"> </script>
+</body>
+</html>
