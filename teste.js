@@ -644,3 +644,83 @@ function passTurn(){
   document.getElementById("buttonPass").style.display = "none";
   PCturn();
 }
+
+
+
+lines = 1;
+function ranking() {
+	var a = document.getElementById("tabela");
+	fetch ('http://twserver.alunos.dcc.fc.up.pt:8008/ranking', {
+		method:'POST',
+		body: JSON.stringify(a)
+	})
+		.then(response => {
+			return response.json();
+		})
+		.then(function(response) {
+			console.log(response);
+			if (response.error==null) {
+				var table = document.getElementById("tabela");
+				for (var i=0; i<response.ranking.length;i++) {
+					var server_data = table.insertRow(lines);
+					var cell1 = server_data.insertCell(0);
+					var cell2 = server_data.insertCell(1);
+					var cell3 = server_data.insertCell(2);
+					cell1.innerHTML = response.ranking[i].nick;
+					cell2.innerHTML = response.ranking[i].victories;
+					cell3.innerHTML = response.ranking[i].games;
+					lines++;
+				}
+			}
+		})
+}
+
+function registo () {
+	var nome = document.getElementById("nome").value;
+	var pass = document.getElementById("pass").value;
+	if((nome!="")&&(pass!="")){
+		var x = JSON.stringify({nick:nome,pass:pass});
+		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/register', {
+			method:'POST',
+			body:x
+		})
+		.then(response =>{return response.json();
+		})
+		.then(function(response) {
+			if(response.error!=null)
+				alert("User registered with a different password");
+			else{
+				alert("Registo sucedido");
+
+			}
+		})
+	}
+	join();
+}
+
+function join(){
+	var group = 12;
+	var nome = document.getElementById("nome").value;
+	var pass = document.getElementById("pass").value;
+	if ((nome!="")&&(pass!="")){
+		var x = JSON.stringify({group:group,nick:nome,pass:pass});
+		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/join', {
+			method:'POST',
+			body:x
+		})
+		.then(response=>{return response.json();
+		})
+		.then(function(response) {
+			if(response.error!=null)
+				alert("Pairing error");
+			else {
+				updated(data.game,nome);
+				alert("coisas");
+			}
+		})
+	}
+}
+
+/*function update(game_id, nome){
+	
+}*/
