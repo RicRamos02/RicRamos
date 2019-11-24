@@ -690,7 +690,8 @@ function registo () {
 			if(response.error!=null)
 				alert("User registered with a different password");
 			else{
-				alert("Registo sucedido");
+				loginFunc();
+				getUser();
 
 			}
 		})
@@ -700,7 +701,7 @@ function registo () {
 
 function join(){
 	var group = 12;
-	var nome = document.getElementById("nome").value;
+	var nome = document.getElementById("user").value;
 	var pass = document.getElementById("pass").value;
 	if ((nome!="")&&(pass!="")){
 		var x = JSON.stringify({group:group,nick:nome,pass:pass});
