@@ -13,7 +13,7 @@ class play{
 };
 
 var userVitorys = 0;
-var userPoints = 0;
+var games = 0;
 var userValue = "";
 
 var onclickpiece;
@@ -42,7 +42,7 @@ function getUser(){
 }
 
 function resetScores(){
-  userPoints = 0;
+  games = 0;
   userVitorys = 0;
   userValue = "";
 }
@@ -50,7 +50,7 @@ function resetScores(){
 function printScores(){
     document.getElementById("namePoints").innerHTML = userValue;
     document.getElementById("victorys").innerHTML = String(userVitorys);
-    document.getElementById("valuePoints").innerHTML = String(userPoints);
+    document.getElementById("games").innerHTML = String(games);
 }
 
 var giveUp = document.getElementById("forfeit");
@@ -276,14 +276,14 @@ function pointsPlayer(){
 //turno do pc
 function PCturn(){
 	if(mypieces.length==0){
-    userPoints += pointsPC();
+    games += pointsPC();
     userVitorys ++;
 		setTimeout(PlayerWin,500);
 		return;
 	}
   else if(array.length==0 && (check(hispieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1 && check(mypieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1)){
     if(pointsPlayer()>pointsPC()){
-      userPoints += pointsPC();
+      games += pointsPC();
       userVitorys ++;
       setTimeout(PlayerWin,500);
     }
@@ -292,7 +292,7 @@ function PCturn(){
     }
     else{
       if(mypieces.length<hispieces.length){
-        userPoints += pointsPC();
+        games += pointsPC();
         userVitorys ++;
         setTimeout(PlayerWin,500);
       }
