@@ -688,7 +688,7 @@ function registo () {
 		})
 		.then(function(response) {
 			if(response.error!=null)
-				alert("User registered with a different passwod");
+				alert("User registered with a different password");
 			else{
 				loginFunc();
 				getUser();
