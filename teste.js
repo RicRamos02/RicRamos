@@ -676,7 +676,7 @@ function ranking() {
 }
 
 function registo () {
-	var nome = document.getElementById("nome").value;
+	var nome = document.getElementById("user").value;
 	var pass = document.getElementById("pass").value;
 	if((nome!="")&&(pass!="")){
 		var x = JSON.stringify({nick:nome,pass:pass});
