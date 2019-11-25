@@ -73,7 +73,7 @@ var hispieces=[];
 var tabu=[];
 
 
-//ao clicar remover e adicionar, tem de ser alterada ainda
+//ao clicar remover e adicionar
 function remove(idpiece){
   document.getElementById("left").style.visibility = "hidden";
   document.getElementById("right").style.visibility = "hidden";
@@ -697,7 +697,8 @@ function registo () {
 		})
 	}
 }
-
+console.log(mypieces[1],mypieces[2],mypieces[3]);
+var game_id;
 function join(){
 	var group = 12;
 	var nome = document.getElementById("user").value;
@@ -714,15 +715,19 @@ function join(){
 			if(response.error!=null)
 				alert("Pairing error");
 			else {
-				update(nome,data.game);
+				mypieces = response.hand;
+				update(nome,response.game);
+				game_id = response.game;
 				alert("coisas");
 			}
 		})
 	}
 }
-
+console.log (game_id);
+console.log(mypieces[1],mypieces[2],mypieces[3]);
+var estado = "inicia";
 function update(nick,game_id){
-	if(nick == "inicia"){
+	if(estado == "inicia"){
 	  evtSource = new EventSource("http://localhost:8107/update?nick=" + nick + "&game=" + game_id);
 	  evtSource.onmessage = function(event){
 		const data1 = JSON.parse(event.data);
@@ -734,11 +739,11 @@ function update(nick,game_id){
 		if(data1.winner != null){
 		  alert(data1.winner + " ganhou!");
 		  update("acaba",game_id);
-		  reiniciar();
+		  //reiniciar();
 		}
 	  }
 	}
-	else if(nick == "acaba"){
+	else if(estado == "acaba"){
 	  evtSource.close();
 	}
   }
