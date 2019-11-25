@@ -723,18 +723,34 @@ function join(){
 		})
 	}
 }
+
+function notify(game_id){
+	var nome = document.getElementById("user").value;
+	var pass = document.getElementById("pass").value;
+	var x = JSON.stringify({nick:nome,pass:pass, piece:null});
+	fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
+		method:'POST',
+		body: x
+	})
+	.then(response=>{console.log(response);return response.json();
+	})
+	.then(function(response) {
+		alert("coisas");
+	})
+  }
+
 console.log (game_id);
 console.log(mypieces[1],mypieces[2],mypieces[3]);
 var estado = "inicia";
 function update(nick,game_id){
 	if(estado == "inicia"){
-	  evtSource = new EventSource("http://localhost:8107/update?nick=" + nick + "&game=" + game_id);
+	  evtSource = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=" + nick + "&game=" + game_id);
 	  evtSource.onmessage = function(event){
 		const data1 = JSON.parse(event.data);
-		vez_jogar(data1.turn);
-		if(data1.turn == username){
+		//vez_jogar(data1.turn);
+		if(data1.turn == nick){
 		  var coluna = data1.column;
-		  jogada(coluna,"adversario");
+		  //jogada(coluna,"adversario");
 		}
 		if(data1.winner != null){
 		  alert(data1.winner + " ganhou!");
@@ -747,3 +763,20 @@ function update(nick,game_id){
 	  evtSource.close();
 	}
   }
+
+  function desistir(){
+	var nome = document.getElementById("user").value;
+	var pass = document.getElementById("pass").value;
+	var url = "http://twserver.alunos.dcc.fc.up.pt:8008/leave";
+	var desiste = JSON.stringify({game:game_id , nick:nome , pass:pass});
+	fetch(url,{method:'POST',body:desiste}).
+	  then(response=>{
+		return response.json();
+	  }).
+	  then(function(data) {
+		if(data.error==null)
+		  game_id=0;
+		  //reiniciar();
+	  })
+  }
+
