@@ -696,7 +696,6 @@ function registo () {
 			}
 		})
 	}
-	join();
 }
 
 function join(){
@@ -709,19 +708,37 @@ function join(){
 			method:'POST',
 			body:x
 		})
-		.then(response=>{return response.json();
+		.then(response=>{console.log(response);return response.json();
 		})
 		.then(function(response) {
 			if(response.error!=null)
 				alert("Pairing error");
 			else {
-				updated(data.game,nome);
+				update(nome,data.game);
 				alert("coisas");
 			}
 		})
 	}
 }
 
-/*function update(game_id, nome){
-	
-}*/
+function update(nick,game_id){
+	if(nick == "inicia"){
+	  evtSource = new EventSource("http://localhost:8107/update?nick=" + nick + "&game=" + game_id);
+	  evtSource.onmessage = function(event){
+		const data1 = JSON.parse(event.data);
+		vez_jogar(data1.turn);
+		if(data1.turn == username){
+		  var coluna = data1.column;
+		  jogada(coluna,"adversario");
+		}
+		if(data1.winner != null){
+		  alert(data1.winner + " ganhou!");
+		  update("acaba",game_id);
+		  reiniciar();
+		}
+	  }
+	}
+	else if(nick == "acaba"){
+	  evtSource.close();
+	}
+  }
