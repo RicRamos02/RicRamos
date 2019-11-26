@@ -1,6 +1,7 @@
 var game_id;
 var skip;
 var piece;
+var nome;
 
 
 class Piece {
@@ -590,13 +591,13 @@ function jogada2(piece,l,r){
 //verificar se pode jogar à esquerda
 function checkleftp(test,l){
 	if(test.left==l || test.right==l)
-		return 1;
+	return 1;
 	return -1;
 }
 //verificar se pode jogar à direita
 function checkrightp(test,r){
 	if(test.left==r || test.right==r)
-		return 1;
+	return 1;
 	return -1;
 }
 //buscar peça do baralho
@@ -612,7 +613,7 @@ function getDeck(){
 	var p = document.createElement("span");
 	var idd;
 	if (peçafora.left != 0)
-		idd = "" + peçafora.left + "" + peçafora.right + "";
+	idd = "" + peçafora.left + "" + peçafora.right + "";
 	else idd = "" + peçafora.right + "";
 	p.setAttribute('id', "piece(" + idd + ")");
 	p.setAttribute("class", "pecaPlayer");
@@ -643,7 +644,7 @@ function chekarHand() {
 		document.getElementById("buttonDeck").style.display = "none";
 		document.getElementById("warnings").innerHTML = "Your turn";
 	}
-
+	
 	
 }
 //passar a vez
@@ -683,8 +684,8 @@ function ranking() {
 }
 
 function registo () {
-	var nome = document.getElementById("user").value;
 	var pass = document.getElementById("pass").value;
+	nome = document.getElementById("user").value;
 	if((nome!="")&&(pass!="")){
 		var x = JSON.stringify({nick:nome,pass:pass});
 		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/register', {
@@ -708,7 +709,6 @@ console.log(mypieces[1],mypieces[2],mypieces[3]);
 function join(){
 	limpar();
 	var group = 12;
-	var nome = document.getElementById("user").value;
 	var pass = document.getElementById("pass").value;
 	if ((nome!="")&&(pass!="")){
 		var x = JSON.stringify({group:group,nick:nome,pass:pass});
@@ -725,8 +725,8 @@ function join(){
 			disappear2();
 			start2();
 			mypieces = response.hand;
-			update(nome,response.game);
 			game_id = response.game;
+			update();
 			alert("coisas");
 		}
 	})
@@ -734,7 +734,6 @@ function join(){
 }
 
 function notify(){
-	var nome = document.getElementById("user").value;
 	var pass = document.getElementById("pass").value;
 	
 	if (piece == null ) {
@@ -749,34 +748,37 @@ function notify(){
 		alert("coisas");
 	})
 }
-else {
-	var x = JSON.stringify({nick:nome,pass:pass,game:game_id})
-	fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
-	method:'POST',
-	body: x
-})
-.then(response=>{console.log(response);return response.json();
-})
-.then(function(response) {
-	alert("coisas");
-})
-}
+	else {
+		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id })
+		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
+			method: 'POST',
+			body: x
+		})
+			.then(response => {
+				console.log(response); return response.json();
+			})
+			.then(function (response) {
+				alert("tentei");
+			})
+	}
 }
 
 console.log (game_id);
 console.log(mypieces[1],mypieces[2],mypieces[3]);
 var estado = "inicia";
-function update(nick,game_id){
+function update(){
+	
 	if(estado == "inicia"){
-		evtSource = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=" + nick + "&game=" + game_id);
+		evtSource = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=" + nome + "&game=" + game_id);
 		evtSource.onmessage = function(event){
 			const data1 = JSON.parse(event.data);
-			if(data1.turn == nick){
-				
+			if(data1.turn == nome){
+				console.log(data1);
 			}
 			if(data1.winner != null){
 				alert(data1.winner + " ganhou!");
-				update("acaba",game_id);
+				estado = "acaba";
+				update();
 			}
 		}
 	}
@@ -786,7 +788,6 @@ function update(nick,game_id){
 }
 
 function desistir(){
-	var nome = document.getElementById("user").value;
 	var pass = document.getElementById("pass").value;
 	var url = "http://twserver.alunos.dcc.fc.up.pt:8008/leave";
 	var desiste = JSON.stringify({game:game_id , nick:nome , pass:pass});
