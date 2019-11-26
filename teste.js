@@ -714,7 +714,9 @@ function join(){
 			if(response.error!=null)
 				alert("Pairing error");
 			else {
+				console.log(mypieces);
 				mypieces = response.hand;
+				console.log(mypieces);
 				update(nome,response.game);
 				game_id = response.game;
 				alert("coisas");
@@ -726,7 +728,7 @@ function join(){
 function notify(game_id){
 	var nome = document.getElementById("user").value;
 	var pass = document.getElementById("pass").value;
-	var x = JSON.stringify({nick:nome,pass:pass, piece:null});
+	var x = JSON.stringify({nick:nome,pass:pass,game:game_id,piece:null});
 	fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
 		method:'POST',
 		body: x
@@ -746,19 +748,16 @@ function update(nick,game_id){
 	  evtSource = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=" + nick + "&game=" + game_id);
 	  evtSource.onmessage = function(event){
 		const data1 = JSON.parse(event.data);
-		//vez_jogar(data1.turn);
 		if(data1.turn == nick){
-		  var coluna = data1.column;
-		  //jogada(coluna,"adversario");
+			start();
 		}
 		if(data1.winner != null){
 		  alert(data1.winner + " ganhou!");
 		  update("acaba",game_id);
-		  //reiniciar();
 		}
 	  }
 	}
-	else if(estado == "acaba"){
+	else (estado == "acaba"){
 	  evtSource.close();
 	}
   }
@@ -775,7 +774,6 @@ function update(nick,game_id){
 	  then(function(data) {
 		if(data.error==null)
 		  game_id=0;
-		  //reiniciar();
 	  })
   }
 
