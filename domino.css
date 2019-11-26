@@ -1,6 +1,18 @@
-/*  */
-body{
-  background-image:url("https://cdn6.f-cdn.com/contestentries/1370548/19120511/5b4d43f5c58ce_thumb900.jpg");
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25%;
+}
+body {
+  background-color:#b8b894;
+  color:#000000;
+
+  font-family: Courier New;
+}
+h1 {
+  font-size: 40px;
+  text-align: center;
 }
 
 .centerModal{
@@ -8,11 +20,7 @@ body{
   font-weight: bold;
   font-size: 25px;
 }
-/* Align text to the center */
-.center{
-  text-align: center;
-  color: white;
-}
+
 
 #rulesTitle{
   font-weight: bold;
