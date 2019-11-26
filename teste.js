@@ -714,9 +714,9 @@ function join(){
 			if(response.error!=null)
 				alert("Pairing error");
 			else {
-				console.log(mypieces);
+				disappear2();
+				start();
 				mypieces = response.hand;
-				console.log(mypieces);
 				update(nome,response.game);
 				game_id = response.game;
 				alert("coisas");
@@ -749,7 +749,7 @@ function update(nick,game_id){
 	  evtSource.onmessage = function(event){
 		const data1 = JSON.parse(event.data);
 		if(data1.turn == nick){
-			start();
+
 		}
 		if(data1.winner != null){
 		  alert(data1.winner + " ganhou!");
@@ -757,7 +757,7 @@ function update(nick,game_id){
 		}
 	  }
 	}
-	else (estado == "acaba"){
+	else {
 	  evtSource.close();
 	}
   }

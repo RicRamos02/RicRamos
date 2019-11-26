@@ -125,6 +125,14 @@ function disappear(){
 
 }
 
+function disappear2(){
+  var left = document.getElementById("leftContainer");
+  var gameBoard = document.getElementById("gameBoard");
+  left.style.display = "none";
+  gameBoard.style.display = "block";
+
+}
+
 function giveGame(){
   var giveUp = document.getElementById("forfeit");
 
