@@ -362,3 +362,11 @@ td, th {
   margin-top: 14%;
   color:white;
 }
+
+#BoardOnline{
+  display: none;
+}
+
+#forfeit2{
+  display: none;
+}

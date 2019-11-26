@@ -45,6 +45,21 @@
     </div>
   </div>
 
+  <div id = "BoardOnline">
+    <button id = "startGame2" onclick = "start2()"> START </button>
+    <div id = "board3">
+      <div id="warnings2"></div>
+      <div id="Oponente"></div>
+      <div id="Board2"></div>
+      <div id="PiecePos2">
+        <button id = "left2" onclick = "playpieceplayer('0')"> Left </button>
+        <button id = "right2" onclick = "playpieceplayer('1')"> Right </button>
+      </div>
+      <div id="PlayerHand2"></div>
+      <div id="Deck2"></div>
+    </div>
+  </div>
+
   <div id="leftContainer">
     <div id = "playMenu">
         <button id="button1x1" onclick="join()">1 vs 1</button>
@@ -100,14 +115,20 @@
       </div>
     </div>
     <div id = "forfeit" >
-      <button id = "giveUp" onclick="giveGame(); desistir()"> GiveUp </button>
+      <button id = "giveUp" onclick="giveGame()"> GiveUp </button>
       <button id = "buttonPass" onclick = "passTurn()"> Passar </button>
       <button id=  "buttonDeck" onclick = "getDeck()"> Deck </button>
+    </div>
+    <div id = "forfeit2" >
+      <button id = "giveUp2" onclick="desistir()"> GiveUp </button>
+      <button id = "buttonPass2" onclick = "passTurn2()"> Passar </button>
+      <button id=  "buttonDeck2" onclick = "pedirpeca()"> Deck </button>
     </div>
     <script src = "teste.js">
     </script>
 
   </div>
   <script src = "domino.js"> </script>
+  <script src = "testeonline.js"></script>
 </body>
 </html>
