@@ -8,6 +8,8 @@ function start2(){
 	document.getElementById("Deck2").innerHTML="";
 }
 function limpar(){
+    document.getElementById("buttonRules").style.display = "none";
+    document.getElementById("scores").style.display = "none";
     document.getElementById("titulo").style.display = "none";
     document.getElementById("logo").style.display = "none";
 }
