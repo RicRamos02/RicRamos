@@ -47,7 +47,7 @@
 
   <div id="leftContainer">
     <div id = "playMenu">
-        <button id="button1x1">1 vs 1</button>
+        <button id="button1x1" onclick="join()">1 vs 1</button>
         <button id="button1xpc" onclick = "disappear()">1 vs PC</button>
     </div>
   </div>
@@ -100,7 +100,7 @@
       </div>
     </div>
     <div id = "forfeit" >
-      <button id = "giveUp" onclick="giveGame()"> GiveUp </button>
+      <button id = "giveUp" onclick="giveGame(); desistir()"> GiveUp </button>
       <button id = "buttonPass" onclick = "passTurn()"> Passar </button>
       <button id=  "buttonDeck" onclick = "getDeck()"> Deck </button>
     </div>

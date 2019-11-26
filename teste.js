@@ -73,7 +73,7 @@ var hispieces=[];
 var tabu=[];
 
 
-//ao clicar remover e adicionar, tem de ser alterada ainda
+//ao clicar remover e adicionar
 function remove(idpiece){
   document.getElementById("left").style.visibility = "hidden";
   document.getElementById("right").style.visibility = "hidden";
@@ -696,9 +696,9 @@ function registo () {
 			}
 		})
 	}
-	join();
 }
-
+console.log(mypieces[1],mypieces[2],mypieces[3]);
+var game_id;
 function join(){
 	var group = 12;
 	var nome = document.getElementById("user").value;
@@ -709,19 +709,74 @@ function join(){
 			method:'POST',
 			body:x
 		})
-		.then(response=>{return response.json();
+		.then(response=>{console.log(response);return response.json();
 		})
 		.then(function(response) {
 			if(response.error!=null)
 				alert("Pairing error");
 			else {
-				updated(data.game,nome);
+				mypieces = response.hand;
+				update(nome,response.game);
+				game_id = response.game;
 				alert("coisas");
 			}
 		})
 	}
 }
 
-/*function update(game_id, nome){
-	
-}*/
+function notify(game_id){
+	var nome = document.getElementById("user").value;
+	var pass = document.getElementById("pass").value;
+	var x = JSON.stringify({nick:nome,pass:pass, piece:null});
+	fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
+		method:'POST',
+		body: x
+	})
+	.then(response=>{console.log(response);return response.json();
+	})
+	.then(function(response) {
+		alert("coisas");
+	})
+  }
+
+console.log (game_id);
+console.log(mypieces[1],mypieces[2],mypieces[3]);
+var estado = "inicia";
+function update(nick,game_id){
+	if(estado == "inicia"){
+	  evtSource = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=" + nick + "&game=" + game_id);
+	  evtSource.onmessage = function(event){
+		const data1 = JSON.parse(event.data);
+		//vez_jogar(data1.turn);
+		if(data1.turn == nick){
+		  var coluna = data1.column;
+		  //jogada(coluna,"adversario");
+		}
+		if(data1.winner != null){
+		  alert(data1.winner + " ganhou!");
+		  update("acaba",game_id);
+		  //reiniciar();
+		}
+	  }
+	}
+	else if(estado == "acaba"){
+	  evtSource.close();
+	}
+  }
+
+  function desistir(){
+	var nome = document.getElementById("user").value;
+	var pass = document.getElementById("pass").value;
+	var url = "http://twserver.alunos.dcc.fc.up.pt:8008/leave";
+	var desiste = JSON.stringify({game:game_id , nick:nome , pass:pass});
+	fetch(url,{method:'POST',body:desiste}).
+	  then(response=>{
+		return response.json();
+	  }).
+	  then(function(data) {
+		if(data.error==null)
+		  game_id=0;
+		  //reiniciar();
+	  })
+  }
+
