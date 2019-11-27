@@ -704,7 +704,6 @@ function registo () {
 	})
 }
 }
-console.log(mypieces[1],mypieces[2],mypieces[3]);
 
 function join(){
 	limpar();
@@ -726,7 +725,9 @@ function join(){
 			start2();
 			mypieces = response.hand;
 			game_id = response.game;
+			maxonline(mypieces);
 			update();
+
 			alert("coisas");
 		}
 	})
@@ -739,17 +740,18 @@ function notify(){
 	if (piece == null ) {
 		var x = JSON.stringify({nick:nome,pass:pass,game:game_id,piece:null});
 		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
-		method:'POST',
-		body: x
-	})
-	.then(response=>{console.log(response);return response.json();
-	})
-	.then(function(response) {
-		alert("coisas");
-	})
-}
+			method: 'POST',
+			body: x
+		})
+			.then(response => {
+				console.log(response); return response.json();
+			})
+			.then(function (response) {
+				alert("pedi peca");
+			})
+	}
 	else {
-		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id, piece: peca })
+		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id, piece: piece })
 		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
 			method: 'POST',
 			body: x
@@ -774,7 +776,7 @@ function update(){
 			const data1 = JSON.parse(event.data);
 			if(data1.turn == nome){
 				console.log(data1);
-				notify()
+				jogar();
 			}
 			if(data1.winner != null){
 				alert(data1.winner + " ganhou!");

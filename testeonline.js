@@ -29,58 +29,58 @@ function disappear2(){
   
 }
 
-function chekarHandOn() {
-	if (check(mypieces, tabu[0].left, tabu[tabu.length - 1].right).pos === -1 && array.length === 0) {
-		document.getElementById("warnings2").innerHTML = "You can't play";
-		document.getElementById("buttonDeck2").style.display = "none";
-		document.getElementById("buttonPass2").style.display = "block"
-	}
-	else if (check(mypieces, tabu[0].left, tabu[tabu.length - 1].right).pos === -1) {
-		document.getElementById("buttonDeck2").style.display = "block";
-		document.getElementById("warnings2").innerHTML = "Get new pieces";
-	}
-	else {
-		document.getElementById("buttonDeck2").style.display = "none";
-		document.getElementById("warnings2").innerHTML = "Your turn";
-	}
 
-	
-}
+var pos=0;
 
-
-
-
-//ao clicar remover e adicionar versão online
-function remove(idpiece){
-	document.getElementById("left2").style.visibility = "hidden";
-	document.getElementById("right2").style.visibility = "hidden";
-	if (bool === 1) return;
-	var filhos;
-	var board = document.getElementById("Board2");
-	filhos = document.getElementById("PlayerHand").childNodes;
+function maxonline(array) {
 	var i;
-	for (i = 0; i < filhos.length; i++) {
-		document.getElementById(filhos[i].id).style.color = "white";
-	}
-	for (i = 0; i < filhos.length; i++) {
-		if (filhos[i].id == "piece(" + idpiece + ")") {
-			break;
+	var max=0;
+	var esq=0;
+	for (i=0; i<array.length; i++) {
+		if ((array[i][0]+array[i][1]) > max) {
+			max = (array[i][0]+array[i][1]);
+			pos = i;
+			esq = array[i][0];
+		}
+		else if ((array[i][0]+array[i][1]) == max) {
+			if (array[i][0] > esq){
+				max = (array[i][0]+array[i][1]);
+				pos = i;
+			}
 		}
 	}
-	var change = filhos[i];
-	var test = jogada2(mypieces[i], tabu[0].left, tabu[tabu.length - 1].right);
-	if (test.pos === -1) {
-		document.getElementById("warnings").innerHTML = "Can't play piece";
-		return;
-	}
-	document.getElementById(filhos[i].id).style.color = "green";
-	onclickpiece = i;
-	if (checkleftp(mypieces[onclickpiece], tabu[0].left) !== -1) {
-		document.getElementById("left").style.visibility = "visible";
-	}
-	if (checkrightp(mypieces[onclickpiece], tabu[tabu.length - 1].right) !== -1) {
-		document.getElementById("right").style.visibility = "visible";
-	}
-
+	console.log(pos);
 }
+var num = 1;
+function jogar() {
+	if (num == 1){
+		piece = mypieces[pos];
+		num = 2;
+		notify();
+	}
+	else {
+		piece = mypieces[onclickpiece];
+		notify();
+	}
+}
+
+
+function tabuleiro_on(){
+	var jog = document.createElement("span");
+	var PlayerHand2 = document.getElementById("PlayerHand2");
+ 	for(let i=0; i<mypieces.length;i++){
+ 		let z=mypieces[i][0];
+ 		let w = mypieces[i][1];
+ 		let cod = 127075 + z*7+w;
+ 		jog.setAttribute("id", z +" "+w);
+		jog.innerHTML="&#"+(conta);
+		jog.setAttribute("class","pecaPlayer");
+ 		PlayerHand2.appendChild(jog);
+	 }
+}
+
+
+
+
+
 
