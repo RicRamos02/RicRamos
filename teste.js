@@ -749,7 +749,7 @@ function notify(){
 	})
 }
 	else {
-		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id })
+		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id, piece: peca })
 		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
 			method: 'POST',
 			body: x
@@ -774,6 +774,7 @@ function update(){
 			const data1 = JSON.parse(event.data);
 			if(data1.turn == nome){
 				console.log(data1);
+				notify()
 			}
 			if(data1.winner != null){
 				alert(data1.winner + " ganhou!");
