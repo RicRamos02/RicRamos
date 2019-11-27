@@ -47,3 +47,40 @@ function chekarHandOn() {
 	
 }
 
+
+
+
+//ao clicar remover e adicionar versão online
+function remove(idpiece){
+	document.getElementById("left2").style.visibility = "hidden";
+	document.getElementById("right2").style.visibility = "hidden";
+	if (bool === 1) return;
+	var filhos;
+	var board = document.getElementById("Board2");
+	filhos = document.getElementById("PlayerHand").childNodes;
+	var i;
+	for (i = 0; i < filhos.length; i++) {
+		document.getElementById(filhos[i].id).style.color = "white";
+	}
+	for (i = 0; i < filhos.length; i++) {
+		if (filhos[i].id == "piece(" + idpiece + ")") {
+			break;
+		}
+	}
+	var change = filhos[i];
+	var test = jogada2(mypieces[i], tabu[0].left, tabu[tabu.length - 1].right);
+	if (test.pos === -1) {
+		document.getElementById("warnings").innerHTML = "Can't play piece";
+		return;
+	}
+	document.getElementById(filhos[i].id).style.color = "green";
+	onclickpiece = i;
+	if (checkleftp(mypieces[onclickpiece], tabu[0].left) !== -1) {
+		document.getElementById("left").style.visibility = "visible";
+	}
+	if (checkrightp(mypieces[onclickpiece], tabu[tabu.length - 1].right) !== -1) {
+		document.getElementById("right").style.visibility = "visible";
+	}
+
+}
+
