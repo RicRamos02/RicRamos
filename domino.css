@@ -43,7 +43,7 @@ h1 {
 }
 /* Right box */
 #rightContainer {
-   float:right;
+   float:left;
    background-color: Transparent;
    border: none;
    height: 280px;
@@ -109,14 +109,14 @@ h1 {
 }
 /* 1x1 button */
 #button1x1 {
-  background-image: url("https://image.freepik.com/free-vector/circuit-board-background-flat-style_52683-15669.jpg");
+  background-image: url("https://mathforlove.com/wp-content/uploads/2015/11/domino-65138_1920-1084x813.jpg");
   border: none;
   border-radius: 10%;
-  color: white;
+  color: orange;
   height: 100px;
   width: 160px;
   float:left;
-  font-size: 24px;
+  font-size: 30px;
   margin-top: 200px;
   margin-left: 300px;
   cursor: pointer;
@@ -124,14 +124,14 @@ h1 {
 
 /* 1xpc button */
 #button1xpc {
-  background-image: url("https://image.freepik.com/free-vector/circuit-board-background-flat-style_52683-15669.jpg");
+  background-image: url("https://mathforlove.com/wp-content/uploads/2015/11/domino-65138_1920-1084x813.jpg");
   border: none;
   border-radius: 10%;
-  color: white;
+  color: orange;
   height: 100px;
   width: 160px;
   float:left;
-  font-size: 24px;
+  font-size: 30px;
   margin-top: 200px;
   margin-left: 300px;
   cursor: pointer;
@@ -191,7 +191,7 @@ h1 {
 /*tabuleiro*/
 #gameBoard{
   float:left;
-  background: url("https://images.pexels.com/photos/326311/pexels-photo-326311.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background: url("https://cdn.shopify.com/s/files/1/0179/4028/3492/products/89395800450-1_967x700.jpg?v=1554811993");
   border-radius: 8px;
   height: 520px;
   width: 991px;
