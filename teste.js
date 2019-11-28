@@ -76,8 +76,8 @@ array.length=28;
 var aux=0;
 var mypieces=[];
 var mypieceson=new Array(7);
-for (let i=0; i<mypieceson.length; i++) {
-    mypieceson[i] = new Array(2);
+for (let i=0; i<this.mypieceson.length; i++) {
+    this.mypieceson[i] = new Array(2);
 }
 var hispieces=[];
 var tabu=[];
@@ -729,12 +729,13 @@ function join(){
 			disappear2();
 			start2();
 			for (let j=0; j<response.hand.length; j++){
-				mypieceson[j][0] = response.hand[j][0];
-				mypieceson[j][1] = response.hand[j][1];
+				this.mypieceson[j][0] = response.hand[j][0];
+				this.mypieceson[j][1] = response.hand[j][1];
 			}
 			game_id = response.game;
-			maxonline(mypieceson);
+			maxonline(this.mypieceson);
 			update();
+			tabuleiro_on();
 			alert("coisas");
 		}
 	})
@@ -773,7 +774,7 @@ function notify(){
 }
 
 console.log (game_id);
-console.log(mypieceson[1],mypieceson[2],mypieceson[3]);
+console.log(this.mypieceson[1],this.mypieceson[2],this.mypieceson[3]);
 var estado = "inicia";
 function update(){
 	

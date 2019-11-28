@@ -363,10 +363,6 @@ td, th {
   color:white;
 }
 
-#BoardOnline{
-  display: none;
-}
-
 #forfeit2{
   display: none;
 }
@@ -385,6 +381,7 @@ td, th {
 }
 
 #BoardOnline{
+  display:none;
   float:left;
   background: url("https://www.xpgameplus.com/games/mahjongunlimited/inc/background6.jpg");
   border-radius: 8px;
@@ -394,4 +391,19 @@ td, th {
   overflow-x:auto;
   overflow-y:hidden;
   display: none;
+}
+#PlayerHand2 {
+  visibility: visible;
+  text-align: center;
+  font-size: 60px;
+  margin-top: 1%;
+  color:white;
+}
+#Board2{
+  font-size: 400%;
+  display:block;
+  text-align: center;
+  margin-top:10%;
+  color:white;
+  white-space: nowrap;
 }
