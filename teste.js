@@ -747,7 +747,6 @@ function join(){
 
 function notify(){
 	var pass = document.getElementById("pass").value;
-	
 	if (piece == null ) {
 		var x = JSON.stringify({nick:nome,pass:pass,game:game_id,piece:null});
 		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
@@ -776,6 +775,7 @@ function notify(){
 			})
 	}
 }
+var pecamaior = "Tens a maior peca do jogo, joga-a!"
 var estado = "inicia";
 function update(){
 	if(estado == "inicia"){
@@ -787,9 +787,9 @@ function update(){
 					this.tabul[i][0] = data1.board.line[i][0];
 					this.tabul[i][1] = data1.board.line[i][1];
 				}
-				console.log(this.tabul[1],this.tabul[1],this.tabul[1]);
-				//jogar();
+				console.log(tabul[1],tabul[2],tabul[3]);
 				printboard();
+				document.getElementById("warnings2").innerHTML = pecamaior;
 			}
 			if(data1.winner != null){
 				alert(data1.winner + " ganhou!");

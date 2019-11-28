@@ -29,7 +29,7 @@ function disappear2(){
   
 }
 
-
+var tira;
 var pos=0;
 
 function maxonline(array) {
@@ -66,7 +66,17 @@ function jogar() {
 
 
 function jogar(id) {
-
+	var filhos;
+	filhos = document.getElementById("PlayerHand2").childNodes;
+	for (let i=0; i<filhos.length; i++) {
+		if(filhos[i].id=="(" + id + ")"){
+			this.tira = i;
+			break;
+		}
+	}
+	this.piece=mypieceson[tira];
+	var peca = fihos[tira];
+	document.getElementById("PlayerHand2").removeChild(peca);
 }
 
 function printboard(){
@@ -77,7 +87,7 @@ function printboard(){
 		let z = this.tabul[i][0];
 		let w = this.tabul[i][1];
 		let cod = 127075 + z * 7 + w;
-		piece.setAttribute("id", z + " " + w);
+		piece.setAttribute("id","(" + z + w + ")");
 		piece.setAttribute("class", "pecaPlayer");
 		piece.innerHTML += "&#" + cod;
 		document.getElementById("Board2").appendChild(piece);
@@ -93,7 +103,7 @@ function tabuleiro_on(){
 		let cod = 127075 + z*7+w;
  		piece.setAttribute("id", z +" "+w);
 		piece.setAttribute("class","pecaPlayer");
-		piece.setAttribute("onclick","jogar(" + "");
+		piece.setAttribute("onclick","jogar(" + id + ")");
 		piece.innerHTML+="&#"+cod;
  		document.getElementById("PlayerHand2").appendChild(piece);
 	 }
