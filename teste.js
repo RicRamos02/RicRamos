@@ -1,4 +1,4 @@
-var game_id;
+var game_id = 0;
 var skip;
 var piece;
 var nome;
@@ -75,6 +75,10 @@ var array=[];
 array.length=28;
 var aux=0;
 var mypieces=[];
+var mypieceson=new Array(7);
+for (let i=0; i<mypieceson.length; i++) {
+    mypieceson[i] = new Array(2);
+}
 var hispieces=[];
 var tabu=[];
 
@@ -719,15 +723,18 @@ function join(){
 	})
 	.then(function(response) {
 		if(response.error!=null)
-		alert("Pairing error");
+			alert("Pairing error");
 		else {
+			console.log("tou aqui");
 			disappear2();
 			start2();
-			mypieces = response.hand;
+			for (let j=0; j<response.hand.length; j++){
+				mypieceson[j][0] = response.hand[j][0];
+				mypieceson[j][1] = response.hand[j][1];
+			}
 			game_id = response.game;
-			maxonline(mypieces);
+			maxonline(mypieceson);
 			update();
-
 			alert("coisas");
 		}
 	})
@@ -766,7 +773,7 @@ function notify(){
 }
 
 console.log (game_id);
-console.log(mypieces[1],mypieces[2],mypieces[3]);
+console.log(mypieceson[1],mypieceson[2],mypieceson[3]);
 var estado = "inicia";
 function update(){
 	

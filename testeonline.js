@@ -54,28 +54,28 @@ function maxonline(array) {
 var num = 1;
 function jogar() {
 	if (num == 1){
-		piece = mypieces[pos];
+		piece = mypieceson[pos];
 		num = 2;
 		notify();
 	}
 	else {
-		piece = mypieces[onclickpiece];
+		piece = mypieceson[onclickpiece];
 		notify();
 	}
 }
 
 
 function tabuleiro_on(){
-	var jog = document.createElement("span");
+	var piece = document.createElement("span");
 	var PlayerHand2 = document.getElementById("PlayerHand2");
- 	for(let i=0; i<mypieces.length;i++){
- 		let z=mypieces[i][0];
- 		let w = mypieces[i][1];
+ 	for(let i=0; i<mypieceson.length;i++){
+ 		let z=mypieceson[i][0];
+ 		let w = mypieceson[i][1];
  		let cod = 127075 + z*7+w;
- 		jog.setAttribute("id", z +" "+w);
-		jog.innerHTML="&#"+(conta);
-		jog.setAttribute("class","pecaPlayer");
- 		PlayerHand2.appendChild(jog);
+ 		//piece.setAttribute("id", z +" "+w);
+		piece.innerHTML="&#"+(cod);
+		piece.setAttribute("class","pecaPlayer");
+ 		PlayerHand2.appendChild(piece);
 	 }
 }
 
