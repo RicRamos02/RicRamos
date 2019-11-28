@@ -29,7 +29,7 @@ function disappear2(){
   
 }
 
-var tira;
+var tira=0;
 var pos=0;
 
 function maxonline(array) {
@@ -59,53 +59,51 @@ function jogar() {
 		notify();
 	}
 	else {
-		piece = mypieceson[onclickpiece];
+		piece = mypieceson[tira];
 		notify();
 	}
 }
 
-
-function jogar(id) {
+function jogardep(idpeca) {
 	var filhos;
 	filhos = document.getElementById("PlayerHand2").childNodes;
 	for (let i=0; i<filhos.length; i++) {
-		if(filhos[i].id=="(" + id + ")"){
-			this.tira = i;
+		if(filhos[i].id == "(" + idpeca + ")" ){
+			console.log(filhos[i].id);
+			tira = i;
 			break;
 		}
 	}
-	this.piece=mypieceson[tira];
-	var peca = fihos[tira];
+	piece=mypieceson[tira];
+	notify();
+	console.log(mypieceson[tira]);
+	var peca = filhos[tira];
 	document.getElementById("PlayerHand2").removeChild(peca);
 }
 
 function printboard(){
-	var piece = document.createElement("span");
-	document.getElementById("Board2").appendChild(piece);
-	console.log(tabul[1],tabul[1],tabul[1]);
-	for (let i=0; i<this.tabul.length; i++){
-		let z = this.tabul[i][0];
-		let w = this.tabul[i][1];
+	console.log(tabul[1],tabul[2],tabul[3]);
+	for (let i=0; i<tabul.length; i++){
+		var boas2 = document.createElement("span");
+		let z = tabul[i][0];
+		let w = tabul[i][1];
 		let cod = 127075 + z * 7 + w;
-		piece.setAttribute("id","(" + z + w + ")");
-		piece.setAttribute("class", "pecaPlayer");
-		piece.innerHTML += "&#" + cod;
-		document.getElementById("Board2").appendChild(piece);
+		boas2.innerHTML = "&#" + cod;
+		document.getElementById("Board2").appendChild(boas2);
 	}
 }
 
 function tabuleiro_on(){
-	var piece = document.createElement("span");
-	document.getElementById("PlayerHand2").appendChild(piece);
- 	for(let i=0; i<this.mypieceson.length;i++){
- 		let z = this.mypieceson[i][0];
- 		let w = this.mypieceson[i][1];
+ 	for(let i=0; i<mypieceson.length;i++){
+		var boas = document.createElement("span");
+ 		let z = mypieceson[i][0];
+ 		let w = mypieceson[i][1];
 		let cod = 127075 + z*7+w;
- 		piece.setAttribute("id", z +" "+w);
-		piece.setAttribute("class","pecaPlayer");
-		piece.setAttribute("onclick","jogar(" + id + ")");
-		piece.innerHTML+="&#"+cod;
- 		document.getElementById("PlayerHand2").appendChild(piece);
+ 		boas.setAttribute("id", "(" + z + w + ")");
+		boas.setAttribute("class","pecaPlayer");
+		boas.setAttribute("onclick","jogardep(" + z + w + ")");
+		boas.innerHTML = "&#"+cod;
+ 		document.getElementById("PlayerHand2").appendChild(boas);
 	 }
 }
 

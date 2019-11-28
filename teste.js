@@ -7,14 +7,14 @@ array.length=28;
 var aux=0;
 var mypieces=[];
 var mypieceson=new Array(7);
-for (let i=0; i<this.mypieceson.length; i++) {
-    this.mypieceson[i] = new Array(2);
+for (let i=0; i<mypieceson.length; i++) {
+    mypieceson[i] = new Array(2);
 }
 var hispieces=[];
 var tabu=[];
 var tabul=new Array(7);
-for (let i=0; i<this.tabul.length; i++) {
-    this.tabul[i] = new Array(2);
+for (let i=0; i<tabul.length; i++) {
+    tabul[i] = new Array(2);
 }
 
 
@@ -732,11 +732,11 @@ function join(){
 			disappear2();
 			start2();
 			for (let j=0; j<response.hand.length; j++){
-				this.mypieceson[j][0] = response.hand[j][0];
-				this.mypieceson[j][1] = response.hand[j][1];
+				mypieceson[j][0] = response.hand[j][0];
+				mypieceson[j][1] = response.hand[j][1];
 			}
 			game_id = response.game;
-			maxonline(this.mypieceson);
+			maxonline(mypieceson);
 			update();
 			tabuleiro_on();
 			alert("coisas");
@@ -775,6 +775,7 @@ function notify(){
 			})
 	}
 }
+
 var pecamaior = "Tens a maior peca do jogo, joga-a!"
 var estado = "inicia";
 function update(){
@@ -784,8 +785,8 @@ function update(){
 			const data1 = JSON.parse(event.data);
 			if(data1.turn == nome){
 				for (let i=0; i<data1.board.line.length; i++){
-					this.tabul[i][0] = data1.board.line[i][0];
-					this.tabul[i][1] = data1.board.line[i][1];
+					tabul[i][0] = data1.board.line[i][0];
+					tabul[i][1] = data1.board.line[i][1];
 				}
 				console.log(tabul[1],tabul[2],tabul[3]);
 				printboard();
