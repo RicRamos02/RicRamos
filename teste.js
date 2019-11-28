@@ -2,6 +2,20 @@ var game_id = 0;
 var skip;
 var piece;
 var nome;
+var array=[];
+array.length=28;
+var aux=0;
+var mypieces=[];
+var mypieceson=new Array(7);
+for (let i=0; i<this.mypieceson.length; i++) {
+    this.mypieceson[i] = new Array(2);
+}
+var hispieces=[];
+var tabu=[];
+var tabul=new Array(7);
+for (let i=0; i<this.tabul.length; i++) {
+    this.tabul[i] = new Array(2);
+}
 
 
 class Piece {
@@ -70,17 +84,6 @@ var board2 = document.getElementById("board2");
 function shuffle(array) {
 	array.sort(() => Math.random() - 0.5);
 }
-
-var array=[];
-array.length=28;
-var aux=0;
-var mypieces=[];
-var mypieceson=new Array(7);
-for (let i=0; i<this.mypieceson.length; i++) {
-    this.mypieceson[i] = new Array(2);
-}
-var hispieces=[];
-var tabu=[];
 
 
 //ao clicar remover e adicionar
@@ -756,6 +759,7 @@ function notify(){
 			})
 			.then(function (response) {
 				alert("pedi peca");
+				printboard();
 			})
 	}
 	else {
@@ -772,19 +776,20 @@ function notify(){
 			})
 	}
 }
-
-console.log (game_id);
-console.log(this.mypieceson[1],this.mypieceson[2],this.mypieceson[3]);
 var estado = "inicia";
 function update(){
-	
 	if(estado == "inicia"){
 		evtSource = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=" + nome + "&game=" + game_id);
 		evtSource.onmessage = function(event){
 			const data1 = JSON.parse(event.data);
 			if(data1.turn == nome){
-				console.log(data1);
-				jogar();
+				for (let i=0; i<data1.board.line.length; i++){
+					this.tabul[i][0] = data1.board.line[i][0];
+					this.tabul[i][1] = data1.board.line[i][1];
+				}
+				console.log(this.tabul[1],this.tabul[1],this.tabul[1]);
+				//jogar();
+				printboard();
 			}
 			if(data1.winner != null){
 				alert(data1.winner + " ganhou!");
@@ -807,8 +812,11 @@ function desistir(){
 		return response.json();
 	}).
 	then(function(data) {
-		if(data.error==null)
-		game_id=0;
+		if(data.error==null){
+			game_id=0;
+			estado = "acaba";
+			update();
+		}
 	})
 }
 

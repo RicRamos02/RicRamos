@@ -65,49 +65,39 @@ function jogar() {
 }
 
 
+function jogar(id) {
+
+}
+
+function printboard(){
+	var piece = document.createElement("span");
+	document.getElementById("Board2").appendChild(piece);
+	console.log(tabul[1],tabul[1],tabul[1]);
+	for (let i=0; i<this.tabul.length; i++){
+		let z = this.tabul[i][0];
+		let w = this.tabul[i][1];
+		let cod = 127075 + z * 7 + w;
+		piece.setAttribute("id", z + " " + w);
+		piece.setAttribute("class", "pecaPlayer");
+		piece.innerHTML += "&#" + cod;
+		document.getElementById("Board2").appendChild(piece);
+	}
+}
+
 function tabuleiro_on(){
 	var piece = document.createElement("span");
-	//var PlayerHand2 = document.getElementById("PlayerHand2");
 	document.getElementById("PlayerHand2").appendChild(piece);
  	for(let i=0; i<this.mypieceson.length;i++){
  		let z = this.mypieceson[i][0];
  		let w = this.mypieceson[i][1];
 		let cod = 127075 + z*7+w;
-		console.log(cod); 
  		piece.setAttribute("id", z +" "+w);
 		piece.setAttribute("class","pecaPlayer");
-		piece.setAttribute("onclick","jogar(");
+		piece.setAttribute("onclick","jogar(" + "");
 		piece.innerHTML+="&#"+cod;
  		document.getElementById("PlayerHand2").appendChild(piece);
 	 }
 }
-
-
-
-/*function tabuleiro_on(){
-	var jog = document.createElement("div");
- 	jog.id = "jog";
- 	document.getElementById("tabuleiro").appendChild(jog);
-
- 	for(let i=0; i<jogador2.length;i++){
-
- 		let x = document.createElement("div");
- 		let z=jogador2[i][0];
- 		let w = jogador2[i][1];
- 		let cod = 127075 + z*7+w;
-
- 		x.setAttribute("id", z +" "+w);
- 		x.appendChild(document.createTextNode(String.fromCodePoint(cod)));
- 		var y = document.createAttribute("class");
- 		y.value= "ola";
- 		x.setAttributeNode(y);
- 		jog.appendChild(x);
- 	//x.innerHTML = String.fromCodePoint(jogador[i]);
- 	}
-	var area = document.createElement("div");
-	area.id = "area";
-	document.getElementById("tabuleiro").appendChild(area);
-}*/
 
 
 
