@@ -1,15 +1,21 @@
+var game_id = 0;
+var skip;
+var piece;
+var nome;
+
+
 class Piece {
-  constructor(left, right) {
-    this.left = left;
-    this.right = right;
-  }
+	constructor(left, right) {
+		this.left = left;
+		this.right = right;
+	}
 };
 class play{
-  constructor(pos,sidepiece,sideboard) {
-  	this.pos=pos;
-    this.sidepiece = sidepiece;
-    this.sideboard = sideboard;
-  }
+	constructor(pos,sidepiece,sideboard) {
+		this.pos=pos;
+		this.sidepiece = sidepiece;
+		this.sideboard = sideboard;
+	}
 };
 
 var userVitorys = 0;
@@ -19,38 +25,38 @@ var userValue = "";
 var onclickpiece;
 var dif = 0;
 function easyMode(){
-  document.getElementById("startGame").style.display="block";
-  document.getElementById("Dificulty").style.display="none";
-  dif=1;
+	document.getElementById("startGame").style.display="block";
+	document.getElementById("Dificulty").style.display="none";
+	dif=1;
 }
 function mediumMode(){
-  document.getElementById("startGame").style.display="block";
-  document.getElementById("Dificulty").style.display="none";
-
-  dif=2;
+	document.getElementById("startGame").style.display="block";
+	document.getElementById("Dificulty").style.display="none";
+	
+	dif=2;
 }
 function hardMode(){
-  document.getElementById("startGame").style.display="block";
-  document.getElementById("Dificulty").style.display="none";
-
-  dif=3;
+	document.getElementById("startGame").style.display="block";
+	document.getElementById("Dificulty").style.display="none";
+	
+	dif=3;
 }
 
 function getUser(){
-  var user = document.getElementById("user");
-  userValue = user.value;
+	var user = document.getElementById("user");
+	userValue = user.value;
 }
 
 function resetScores(){
-  games = 0;
-  userVitorys = 0;
-  userValue = "";
+	games = 0;
+	userVitorys = 0;
+	userValue = "";
 }
 
 function printScores(){
-    document.getElementById("namePoints").innerHTML = userValue;
-    document.getElementById("victorys").innerHTML = String(userVitorys);
-    document.getElementById("games").innerHTML = String(games);
+	document.getElementById("namePoints").innerHTML = userValue;
+	document.getElementById("victorys").innerHTML = String(userVitorys);
+	document.getElementById("games").innerHTML = String(games);
 }
 
 var giveUp = document.getElementById("forfeit");
@@ -62,27 +68,31 @@ var board2 = document.getElementById("board2");
 
 //baralhar array
 function shuffle(array) {
-  array.sort(() => Math.random() - 0.5);
+	array.sort(() => Math.random() - 0.5);
 }
 
 var array=[];
 array.length=28;
 var aux=0;
 var mypieces=[];
+var mypieceson=new Array(7);
+for (let i=0; i<this.mypieceson.length; i++) {
+    this.mypieceson[i] = new Array(2);
+}
 var hispieces=[];
 var tabu=[];
 
 
 //ao clicar remover e adicionar
 function remove(idpiece){
-  document.getElementById("left").style.visibility = "hidden";
-  document.getElementById("right").style.visibility = "hidden";
+	document.getElementById("left").style.visibility = "hidden";
+	document.getElementById("right").style.visibility = "hidden";
 	if(bool===1) return;
 	var filhos;
 	var board=document.getElementById("Board");
 	filhos=document.getElementById("PlayerHand").childNodes;
 	var i;
-  for(i=0;i<filhos.length;i++){
+	for(i=0;i<filhos.length;i++){
 		document.getElementById(filhos[i].id).style.color ="white";
 	}
 	for(i=0;i<filhos.length;i++){
@@ -93,18 +103,18 @@ function remove(idpiece){
 	var change=filhos[i];
 	var test=jogada2(mypieces[i],tabu[0].left,tabu[tabu.length-1].right);
 	if(test.pos===-1){
-    document.getElementById("warnings").innerHTML = "Can't play piece";
-    return;
+		document.getElementById("warnings").innerHTML = "Can't play piece";
+		return;
 	}
-  	document.getElementById(filhos[i].id).style.color = "green";
-  onclickpiece=i;
-  if(checkleftp(mypieces[onclickpiece],tabu[0].left)!==-1){
-    document.getElementById("left").style.visibility ="visible";
-  }
-  if(checkrightp(mypieces[onclickpiece],tabu[tabu.length-1].right)!==-1){
-    document.getElementById("right").style.visibility = "visible";
-  }
-
+	document.getElementById(filhos[i].id).style.color = "green";
+	onclickpiece=i;
+	if(checkleftp(mypieces[onclickpiece],tabu[0].left)!==-1){
+		document.getElementById("left").style.visibility ="visible";
+	}
+	if(checkrightp(mypieces[onclickpiece],tabu[tabu.length-1].right)!==-1){
+		document.getElementById("right").style.visibility = "visible";
+	}
+	
 }
 var l=-1,r=-1;
 var max=0;
@@ -113,207 +123,208 @@ var maxpiece=0;
 var bool=0;
 //maximo
 function myFunction(item,index) {
-  maxpiece=item.left+item.right;
-  if(maxpiece>max){
-  	max=maxpiece;
-  	pos=index;
-  	bool=1;
-  }
+	maxpiece=item.left+item.right;
+	if(maxpiece>max){
+		max=maxpiece;
+		pos=index;
+		bool=1;
+	}
 }
-//começar o jogo
+
+//começar o jogo offline
 function start(){
-document.getElementById("startGame").style.display="none";
-document.getElementById("board2").style.display ="block";
-document.getElementById("forfeit").style.display = "block";
-document.getElementById("PCHand").innerHTML="";
-document.getElementById("Board").innerHTML="";
-document.getElementById("PlayerHand").innerHTML="";
-document.getElementById("Deck").innerHTML="";
-
-  reset();
-  l=-1,r=-1;
-  max=0;
-  pos=-1;
-  maxpiece=0;
-  mypieces.forEach(myFunction);
-  bool = 0;
-  hispieces.forEach(myFunction);
-tabu.length=1;
-if(bool==0){
-	var board=document.getElementById("Board");
-	var filhos=document.getElementById("PlayerHand").childNodes;
-	var change=filhos[pos];
-	var span=document.createElement("span");
-	var conta=127025+mypieces[pos].left*7+mypieces[pos].right;
-	l=mypieces[pos].left;r=mypieces[pos].right;
-	if(l===r) conta+=50;
+	document.getElementById("startGame").style.display="none";
+	document.getElementById("board2").style.display ="block";
+	document.getElementById("forfeit").style.display = "block";
+	document.getElementById("PCHand").innerHTML="";
+	document.getElementById("Board").innerHTML="";
+	document.getElementById("PlayerHand").innerHTML="";
+	document.getElementById("Deck").innerHTML="";
+	
+	reset();
+	l=-1,r=-1;
+	max=0;
+	pos=-1;
+	maxpiece=0;
+	mypieces.forEach(myFunction);
+	bool = 0;
+	hispieces.forEach(myFunction);
+	tabu.length=1;
+	if(bool==0){
+		var board=document.getElementById("Board");
+		var filhos=document.getElementById("PlayerHand").childNodes;
+		var change=filhos[pos];
+		var span=document.createElement("span");
+		var conta=127025+mypieces[pos].left*7+mypieces[pos].right;
+		l=mypieces[pos].left;r=mypieces[pos].right;
+		if(l===r) conta+=50;
 		span.innerHTML="&#"+(conta);
-	document.getElementById("PlayerHand").removeChild(change);
-	board.appendChild(span);
-	tabu[0]=mypieces[pos];
-	bool=1;
-	mypieces.splice(pos, 1);
-  document.getElementById("warnings").innerHTML = "PC TURN";
-	setTimeout(PCturn,1000);
-}
-else {
-	var board=document.getElementById("Board");
-	var filhos=document.getElementById("PCHand").childNodes;
-	var change=filhos[pos];
-	var span=document.createElement("span");
-	var conta=127025+hispieces[pos].left*7+hispieces[pos].right;
-	l=hispieces[pos].left;r=hispieces[pos].right;
-	if(l===r) conta+=50;
+		document.getElementById("PlayerHand").removeChild(change);
+		board.appendChild(span);
+		tabu[0]=mypieces[pos];
+		bool=1;
+		mypieces.splice(pos, 1);
+		document.getElementById("warnings").innerHTML = "PC TURN";
+		setTimeout(PCturn,1000);
+	}
+	else {
+		var board=document.getElementById("Board");
+		var filhos=document.getElementById("PCHand").childNodes;
+		var change=filhos[pos];
+		var span=document.createElement("span");
+		var conta=127025+hispieces[pos].left*7+hispieces[pos].right;
+		l=hispieces[pos].left;r=hispieces[pos].right;
+		if(l===r) conta+=50;
 		span.innerHTML="&#"+(conta);
-	document.getElementById("PCHand").removeChild(change);
-	board.appendChild(span);
-	tabu[0]=hispieces[pos];
-	bool=0;
-	hispieces.splice(pos, 1);
-	chekarHand();
-}
-
+		document.getElementById("PCHand").removeChild(change);
+		board.appendChild(span);
+		tabu[0]=hispieces[pos];
+		bool=0;
+		hispieces.splice(pos, 1);
+		chekarHand();
+	}
+	
 }
 // resetar o jogo
 function reset(){
-  array.length=28;
-  var aux=0;
-  for(var i=0;i<7;i++){
-  	for(var j=i;j<7;j++){
-  		var p=new Piece(i,j);
-  		array[aux]=p;
-  		aux++;
-  	}
-  }
-  shuffle(array);
-
-  mypieces = [];
-  hispieces = [];
-  for(var i=0;i<7;i++){
-  	var newpiece = Math.floor(Math.random() * array.length);
-  	mypieces[i]=array[newpiece];
-  	var conta=127025+array[newpiece].left*7+array[newpiece].right+50;
-  	var p=document.createElement("span");
-  	var idd;
-  	if(mypieces[i].left!=0)
-  		idd=""+mypieces[i].left+""+mypieces[i].right+"";
-  	else idd=""+mypieces[i].right+"";
-  	p.setAttribute('id',"piece("+idd+")");
-    p.setAttribute("class","pecaPlayer");
-  	p.setAttribute("onclick","remove("+idd+")");
-  	p.innerHTML="&#"+(conta);
-  	document.getElementById("PlayerHand").appendChild(p);
-  	array.splice(newpiece, 1);
-  }
-  //guardas as peças dele
-  for(var i=0;i<7;i++){
-  	var newpiece = Math.floor(Math.random() * array.length);
-  	hispieces[i]=array[newpiece];
-  	var conta=127025+array[newpiece].left*7+array[newpiece].right+50;
-  	var p=document.createElement("span");
-  	var idd;
-  	if(array[i].left!=0)
-  		idd=""+array[i].left+""+array[i].right+"";
-  	else idd=""+array[i].right+"";
-  	p.innerHTML="&#"+127074;
-  	document.getElementById("PCHand").appendChild(p);
-  	array.splice(newpiece, 1);
-  }
-  //peças no baralho, pode nao aparecer
-  for(var i=0;i<14;i++){
-  	var conta=127025+array[i].left*7+array[i].right;
-  	var p=document.createElement("span");
-  	var idd;
-  	if(array[i].left!=0)
-  		idd=""+array[i].left+""+array[i].right+"";
-  	else idd=""+array[i].right+"";
-  	p.setAttribute('id',"piece("+idd+")");
-  	p.setAttribute("onclick","remove("+idd+")");
-  	p.innerHTML="&#"+127074;
-  	document.getElementById("Deck").appendChild(p);
-  }
+	array.length=28;
+	var aux=0;
+	for(var i=0;i<7;i++){
+		for(var j=i;j<7;j++){
+			var p=new Piece(i,j);
+			array[aux]=p;
+			aux++;
+		}
+	}
+	shuffle(array);
+	
+	mypieces = [];
+	hispieces = [];
+	for(var i=0;i<7;i++){
+		var newpiece = Math.floor(Math.random() * array.length);
+		mypieces[i]=array[newpiece];
+		var conta=127025+array[newpiece].left*7+array[newpiece].right+50;
+		var p=document.createElement("span");
+		var idd;
+		if(mypieces[i].left!=0)
+		idd=""+mypieces[i].left+""+mypieces[i].right+"";
+		else idd=""+mypieces[i].right+"";
+		p.setAttribute('id',"piece("+idd+")");
+		p.setAttribute("class","pecaPlayer");
+		p.setAttribute("onclick","remove("+idd+")");
+		p.innerHTML="&#"+(conta);
+		document.getElementById("PlayerHand").appendChild(p);
+		array.splice(newpiece, 1);
+	}
+	//guardas as peças dele
+	for(var i=0;i<7;i++){
+		var newpiece = Math.floor(Math.random() * array.length);
+		hispieces[i]=array[newpiece];
+		var conta=127025+array[newpiece].left*7+array[newpiece].right+50;
+		var p=document.createElement("span");
+		var idd;
+		if(array[i].left!=0)
+		idd=""+array[i].left+""+array[i].right+"";
+		else idd=""+array[i].right+"";
+		p.innerHTML="&#"+127074;
+		document.getElementById("PCHand").appendChild(p);
+		array.splice(newpiece, 1);
+	}
+	//peças no baralho, pode nao aparecer
+	for(var i=0;i<14;i++){
+		var conta=127025+array[i].left*7+array[i].right;
+		var p=document.createElement("span");
+		var idd;
+		if(array[i].left!=0)
+		idd=""+array[i].left+""+array[i].right+"";
+		else idd=""+array[i].right+"";
+		p.setAttribute('id',"piece("+idd+")");
+		p.setAttribute("onclick","remove("+idd+")");
+		p.innerHTML="&#"+127074;
+		document.getElementById("Deck").appendChild(p);
+	}
 }
 function PCWin(){
-  window.alert("PC WIN!");
-  giveUp.style.display = "none";
-  menu.style.display = "block";
-  gameBoard.style.display = "none";
-  board2.style.display = "none";
-  left.style.display = "block";
+	window.alert("PC WIN!");
+	giveUp.style.display = "none";
+	menu.style.display = "block";
+	gameBoard.style.display = "none";
+	board2.style.display = "none";
+	left.style.display = "block";
 }
 function PlayerWin(){
-  window.alert("PLAYER WIN!");
-  giveUp.style.display = "none";
-  menu.style.display = "block";
-  gameBoard.style.display = "none";
-  board2.style.display = "none";
-  left.style.display = "block";
+	window.alert("PLAYER WIN!");
+	giveUp.style.display = "none";
+	menu.style.display = "block";
+	gameBoard.style.display = "none";
+	board2.style.display = "none";
+	left.style.display = "block";
 }
 function Draw(){
-  window.alert("DRAW!");
-  giveUp.style.display = "none";
-  menu.style.display = "block";
-  gameBoard.style.display = "none";
-  board2.style.display = "none";
-  left.style.display = "block";
+	window.alert("DRAW!");
+	giveUp.style.display = "none";
+	menu.style.display = "block";
+	gameBoard.style.display = "none";
+	board2.style.display = "none";
+	left.style.display = "block";
 }
 //ver pontos na mao do pc
 function pointsPC(){
-  let points = 0;
-  for(var i=0; i<hispieces.length; i++){
-    points+= hispieces[i].left+hispieces[i].right;
-  }
-  return points;
+	let points = 0;
+	for(var i=0; i<hispieces.length; i++){
+		points+= hispieces[i].left+hispieces[i].right;
+	}
+	return points;
 }
 //ver pontos na mao do player
 function pointsPlayer(){
-  let points = 0;
-  for(var i=0; i<mypieces.length; i++){
-    points+= mypieces[i].left+mypieces[i].right;
-  }
-  return points;
+	let points = 0;
+	for(var i=0; i<mypieces.length; i++){
+		points+= mypieces[i].left+mypieces[i].right;
+	}
+	return points;
 }
 //turno do pc
 function PCturn(){
 	if(mypieces.length==0){
-    games += pointsPC();
-    userVitorys ++;
+		games += pointsPC();
+		userVitorys ++;
 		setTimeout(PlayerWin,500);
 		return;
 	}
-  else if(array.length==0 && (check(hispieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1 && check(mypieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1)){
-    if(pointsPlayer()>pointsPC()){
-      games += pointsPC();
-      userVitorys ++;
-      setTimeout(PlayerWin,500);
-    }
-    else if(pointsPlayer()<pointsPC()){
-      setTimeout(PCWin,1000);
-    }
-    else{
-      if(mypieces.length<hispieces.length){
-        games += pointsPC();
-        userVitorys ++;
-        setTimeout(PlayerWin,500);
-      }
-      else if(mypieces.length>hispieces.length){
-        setTimeout(PCWin,1000);
-      }
-      else{
-        setTimeout(Draw,500);
-      }
-    }
-    return;
-  }
+	else if(array.length==0 && (check(hispieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1 && check(mypieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1)){
+		if(pointsPlayer()>pointsPC()){
+			games += pointsPC();
+			userVitorys ++;
+			setTimeout(PlayerWin,500);
+		}
+		else if(pointsPlayer()<pointsPC()){
+			setTimeout(PCWin,1000);
+		}
+		else{
+			if(mypieces.length<hispieces.length){
+				games += pointsPC();
+				userVitorys ++;
+				setTimeout(PlayerWin,500);
+			}
+			else if(mypieces.length>hispieces.length){
+				setTimeout(PCWin,1000);
+			}
+			else{
+				setTimeout(Draw,500);
+			}
+		}
+		return;
+	}
 	if(check(hispieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1){
 		var newpiece = Math.floor(Math.random() * array.length);
 		var peçafora =array[newpiece];
 		array.splice(newpiece,1);
-    if(typeof peçafora === 'undefined'){
-      bool = 0;
-      chekarHand();
-      return;
-    }
+		if(typeof peçafora === 'undefined'){
+			bool = 0;
+			chekarHand();
+			return;
+		}
 		var joga=jogada2(peçafora,tabu[0].left,tabu[tabu.length-1].right);
 		while(joga.pos===-1 && array.length>0){
 			var filhos=document.getElementById("Deck").childNodes;
@@ -328,7 +339,7 @@ function PCturn(){
 			array.splice(newpiece,1);
 			joga=jogada2(peçafora,tabu[0].left,tabu[tabu.length-1].right);
 		}
-	if(joga.pos===-1) {bool=0;}//passa a vez
+		if(joga.pos===-1) {bool=0;}//passa a vez
 		else{
 			var filhos=document.getElementById("Deck").childNodes;
 			var change=filhos[newpiece];
@@ -343,27 +354,27 @@ function PCturn(){
 		}
 	}
 	else{
-    if(dif ===  1){
-		    var posi=check(hispieces,tabu[0].left,tabu[tabu.length-1].right);
-    }
-    else if(dif === 2){
-      var jogar=check1(hispieces,tabu[0].left,tabu[tabu.length-1].right);
-		  var posi=myFunction1(jogar);
-    }
-    else if(dif == 3){
-      var jogar=check2(hispieces,tabu[0].left,tabu[tabu.length-1].right);
-		  var posi=myFunction2(jogar,tabu[0].left,tabu[tabu.length-1].right);
-		  if(posi.pos===-1){
-        jogar=check1(hispieces,tabu[0].left,tabu[tabu.length-1].right);
-        posi=myFunction1(jogar);
-      }
-    }
+		if(dif ===  1){
+			var posi=check(hispieces,tabu[0].left,tabu[tabu.length-1].right);
+		}
+		else if(dif === 2){
+			var jogar=check1(hispieces,tabu[0].left,tabu[tabu.length-1].right);
+			var posi=myFunction1(jogar);
+		}
+		else if(dif == 3){
+			var jogar=check2(hispieces,tabu[0].left,tabu[tabu.length-1].right);
+			var posi=myFunction2(jogar,tabu[0].left,tabu[tabu.length-1].right);
+			if(posi.pos===-1){
+				jogar=check1(hispieces,tabu[0].left,tabu[tabu.length-1].right);
+				posi=myFunction1(jogar);
+			}
+		}
 		playpiecepc(posi.pos,posi.sidepiece,posi.sideboard);
 		bool=0;
 	}
 	if(hispieces.length==0){
 		setTimeout(PCWin,1000);
-    return;
+		return;
 	}
 	chekarHand();
 }
@@ -385,8 +396,8 @@ function myFunction2(arr,l,r) {
 	var joga=new play(-1,-1,-1);
 	let maxi=-1;
 	var joga=new play(-1,-1,-1);
-  	for(var i=0;i<arr.length;i++){
-  		if(hispieces[arr[i]].left==l) {
+	for(var i=0;i<arr.length;i++){
+		if(hispieces[arr[i]].left==l) {
 			let hpaux=[...hispieces];
 			let l1=hispieces[arr[i]].right;
 			let r1=tabu[tabu.length-1].right;
@@ -394,13 +405,13 @@ function myFunction2(arr,l,r) {
 			hpaux.splice(arr[i],1);
 			if(checkleft(hpaux,l1).pos!==-1 && checkright(hpaux,r1).pos!==-1){
 				if(maxaux>=maxi){
-				 maxi=maxaux;
-				 joga= new play(arr[i],0,0);
+					maxi=maxaux;
+					joga= new play(arr[i],0,0);
 				}
 			}
-
-
-  		}
+			
+			
+		}
 		if(hispieces[arr[i]].right==l) {
 			let hpaux=[...hispieces];
 			let l1=hispieces[arr[i]].left;
@@ -409,8 +420,8 @@ function myFunction2(arr,l,r) {
 			hpaux.splice(arr[i],1);
 			if(checkleft(hpaux,l1).pos!==-1 && checkright(hpaux,r1).pos!==-1){
 				if(maxaux>=maxi){
-				 maxi=maxaux;
-				 joga= new play(arr[i],1,0);
+					maxi=maxaux;
+					joga= new play(arr[i],1,0);
 				}
 			}
 		}
@@ -422,8 +433,8 @@ function myFunction2(arr,l,r) {
 			hpaux.splice(arr[i],1);
 			if(checkleft(hpaux,l1).pos!==-1 && checkright(hpaux,r1).pos!==-1){
 				if(maxaux>=maxi){
-				 maxi=maxaux;
-				 joga= new play(arr[i],0,1);
+					maxi=maxaux;
+					joga= new play(arr[i],0,1);
 				}
 			}
 		}
@@ -435,14 +446,14 @@ function myFunction2(arr,l,r) {
 			hpaux.splice(arr[i],1);
 			if(checkleft(hpaux,l1).pos!==-1 && checkright(hpaux,r1).pos!==-1){
 				if(maxaux>=maxi){
-				 maxi=maxaux;
-				 joga= new play(arr[i],1,1);
+					maxi=maxaux;
+					joga= new play(arr[i],1,1);
 				}
 			}
 		}
-  	}
-
-  	return joga;
+	}
+	
+	return joga;
 }
 function checkleft(arr,l){
 	var joga=new play(-1,-1,-1);
@@ -477,12 +488,12 @@ function check1(arr,l,r){
 function myFunction1(arr) {
 	let max=-1;
 	var joga=new play(-1,-1,-1);
-  	for(var i=0;i<arr.length;i++){
-  		let conta=hispieces[arr[i].pos].left+hispieces[arr[i].pos].right;
-
-  		if(max<conta) {max=conta; joga=arr[i];}
-  	}
-  	return joga;
+	for(var i=0;i<arr.length;i++){
+		let conta=hispieces[arr[i].pos].left+hispieces[arr[i].pos].right;
+		
+		if(max<conta) {max=conta; joga=arr[i];}
+	}
+	return joga;
 }
 //jogar peça do pc
 function playpiecepc(posi,sidepi,sideb){
@@ -511,12 +522,12 @@ function playpieceplayer(sideb){
 	var sidepi;
 	if(sideb==0){
 		if(tabu[0].left===mypieces[onclickpiece].left)
-			sidepi=0;
+		sidepi=0;
 		else sidepi=1;
 	}
 	if(sideb==1){
 		if(tabu[tabu.length-1].right===mypieces[onclickpiece].left)
-			sidepi=0;
+		sidepi=0;
 		else sidepi=1;
 	}
 	var conta=127025+valuepiece(mypieces,onclickpiece,sidepi,sideb);
@@ -526,11 +537,11 @@ function playpieceplayer(sideb){
 	if(sideb==0) board.insertBefore(span,board.childNodes[0]);
 	else board.appendChild(span);
 	mypieces.splice(onclickpiece, 1);
-  bool=1;
-  document.getElementById("left").style.visibility = "hidden";
-  document.getElementById("right").style.visibility = "hidden";
-  document.getElementById("warnings").innerHTML = "PC TURN";
-  setTimeout(PCturn,1000);
+	bool=1;
+	document.getElementById("left").style.visibility = "hidden";
+	document.getElementById("right").style.visibility = "hidden";
+	document.getElementById("warnings").innerHTML = "PC TURN";
+	setTimeout(PCturn,1000);
 }
 //calcular valor da peça
 function valuepiece(arr,pi,sp,sb){
@@ -538,27 +549,27 @@ function valuepiece(arr,pi,sp,sb){
 	if(sp==0 && sb=="0"){
 		tabu.unshift(new Piece(arr[pi].right,arr[pi].left));
 		if(arr[pi].right===arr[pi].left)
-			return 50+arr[pi].right*7+arr[pi].left;
+		return 50+arr[pi].right*7+arr[pi].left;
 		return arr[pi].right*7+arr[pi].left;
 	}
 	if(sp==0 && sb=="1"){
 		tabu.push(new Piece(arr[pi].left,arr[pi].right));
 		if(arr[pi].right===arr[pi].left)
 		return arr[pi].left*7+arr[pi].right+50;
-			return arr[pi].left*7+arr[pi].right;
+		return arr[pi].left*7+arr[pi].right;
 	}
 	if(sp==1 && sb=="0"){
 		tabu.unshift(new Piece(arr[pi].left,arr[pi].right));
 		if(arr[pi].right===arr[pi].left)
 		return arr[pi].left*7+arr[pi].right+50;
-			return arr[pi].left*7+arr[pi].right;
+		return arr[pi].left*7+arr[pi].right;
 	}
 	if(sp==1 && sb=="1"){
 		tabu.push(new Piece(arr[pi].right,arr[pi].left));
 		if(arr[pi].right===arr[pi].left)
 		return arr[pi].right*7+arr[pi].left+50;
-			return arr[pi].right*7+arr[pi].left;
-
+		return arr[pi].right*7+arr[pi].left;
+		
 	}
 }
 //verifica se pode jogar alguma das peças da mao
@@ -584,65 +595,66 @@ function jogada2(piece,l,r){
 //verificar se pode jogar à esquerda
 function checkleftp(test,l){
 	if(test.left==l || test.right==l)
-    return 1;
+	return 1;
 	return -1;
 }
 //verificar se pode jogar à direita
 function checkrightp(test,r){
 	if(test.left==r || test.right==r)
-    return 1;
+	return 1;
 	return -1;
 }
 //buscar peça do baralho
 function getDeck(){
-  var newpiece = Math.floor(Math.random() * array.length);
-  var peçafora =array[newpiece];
-  array.splice(newpiece,1);
-  mypieces.push(peçafora);
-  var conta=127025+peçafora.left*7+peçafora.right+50;
-  var filhos=document.getElementById("Deck").childNodes;
-  var change=filhos[newpiece];
-  document.getElementById("Deck").removeChild(change);
-  var p=document.createElement("span");
-  var idd;
-  if(peçafora.left!=0)
-    idd=""+peçafora.left+""+peçafora.right+"";
-  else idd=""+peçafora.right+"";
-  p.setAttribute('id',"piece("+idd+")");
-  p.setAttribute("class","pecaPlayer");
-  p.setAttribute("onclick","remove("+idd+")");
-  p.innerHTML="&#"+(conta);
-  document.getElementById("PlayerHand").appendChild(p);
-  if(check(mypieces,tabu[0].left,tabu[tabu.length-1].right).pos!=-1){
-    document.getElementById("buttonDeck").style.display="none";
-    document.getElementById("warnings").innerHTML = "Your turn";
-  }
-  else {
-    chekarHand();
-  }
+	var newpiece = Math.floor(Math.random() * array.length);
+	var peçafora =array[newpiece];
+	array.splice(newpiece,1);
+	mypieces.push(peçafora);
+	var conta=127025+peçafora.left*7+peçafora.right+50;
+	var filhos=document.getElementById("Deck").childNodes;
+	var change = filhos[newpiece];
+	document.getElementById("Deck").removeChild(change);
+	var p = document.createElement("span");
+	var idd;
+	if (peçafora.left != 0)
+	idd = "" + peçafora.left + "" + peçafora.right + "";
+	else idd = "" + peçafora.right + "";
+	p.setAttribute('id', "piece(" + idd + ")");
+	p.setAttribute("class", "pecaPlayer");
+	p.setAttribute("onclick", "remove(" + idd + ")");
+	p.innerHTML = "&#" + (conta);
+	document.getElementById("PlayerHand").appendChild(p);
+	if (check(mypieces, tabu[0].left, tabu[tabu.length - 1].right).pos != -1) {
+		document.getElementById("buttonDeck").style.display = "none";
+		document.getElementById("warnings").innerHTML = "Your turn";
+	}
+	else {
+		chekarHand();
+	}
 }
+
 //verifica se pode jogar, se tem de ir buscar ao baralho ou se tem de passar
-function chekarHand(){
-  if(check(mypieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1 && array.length === 0){
-    document.getElementById("warnings").innerHTML = "You can't play";
-    document.getElementById("buttonDeck").style.display="none";
-    document.getElementById("buttonPass").style.display = "block"
-  }
-  else if(check(mypieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1){
-    document.getElementById("buttonDeck").style.display="block";
-    document.getElementById("warnings").innerHTML = "Get new pieces";
-  }
-  else{
-    document.getElementById("buttonDeck").style.display="none";
-    document.getElementById("warnings").innerHTML = "Your turn";
-  }
-
-
+function chekarHand() {
+	if (check(mypieces, tabu[0].left, tabu[tabu.length - 1].right).pos === -1 && array.length === 0) {
+		document.getElementById("warnings").innerHTML = "You can't play";
+		document.getElementById("buttonDeck").style.display = "none";
+		document.getElementById("buttonPass").style.display = "block"
+	}
+	else if (check(mypieces, tabu[0].left, tabu[tabu.length - 1].right).pos === -1) {
+		document.getElementById("buttonDeck").style.display = "block";
+		document.getElementById("warnings").innerHTML = "Get new pieces";
+	}
+	else {
+		document.getElementById("buttonDeck").style.display = "none";
+		document.getElementById("warnings").innerHTML = "Your turn";
+	}
+	
+	
 }
 //passar a vez
 function passTurn(){
-  document.getElementById("buttonPass").style.display = "none";
-  PCturn();
+	document.getElementById("buttonPass").style.display = "none";
+	PCturn();
 }
 
 
@@ -651,132 +663,152 @@ lines = 1;
 function ranking() {
 	var a = document.getElementById("tabela");
 	fetch ('http://twserver.alunos.dcc.fc.up.pt:8008/ranking', {
-		method:'POST',
-		body: JSON.stringify(a)
-	})
-		.then(response => {
-			return response.json();
-		})
-		.then(function(response) {
-			console.log(response);
-			if (response.error==null) {
-				var table = document.getElementById("tabela");
-				for (var i=0; i<response.ranking.length;i++) {
-					var server_data = table.insertRow(lines);
-					var cell1 = server_data.insertCell(0);
-					var cell2 = server_data.insertCell(1);
-					var cell3 = server_data.insertCell(2);
-					cell1.innerHTML = response.ranking[i].nick;
-					cell2.innerHTML = response.ranking[i].victories;
-					cell3.innerHTML = response.ranking[i].games;
-					lines++;
-				}
-			}
-		})
+	method:'POST',
+	body: JSON.stringify(a)
+})
+.then(response => {
+	return response.json();
+})
+.then(function(response) {
+	console.log(response);
+	if (response.error==null) {
+		var table = document.getElementById("tabela");
+		for (var i=0; i<response.ranking.length;i++) {
+			var server_data = table.insertRow(lines);
+			var cell1 = server_data.insertCell(0);
+			var cell2 = server_data.insertCell(1);
+			var cell3 = server_data.insertCell(2);
+			cell1.innerHTML = response.ranking[i].nick;
+			cell2.innerHTML = response.ranking[i].victories;
+			cell3.innerHTML = response.ranking[i].games;
+			lines++;
+		}
+	}
+})
 }
 
 function registo () {
-	var nome = document.getElementById("user").value;
 	var pass = document.getElementById("pass").value;
+	nome = document.getElementById("user").value;
 	if((nome!="")&&(pass!="")){
 		var x = JSON.stringify({nick:nome,pass:pass});
 		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/register', {
-			method:'POST',
-			body:x
-		})
-		.then(response =>{return response.json();
-		})
-		.then(function(response) {
-			if(response.error!=null)
-				alert("User registered with a different password");
-			else{
-				loginFunc();
-				getUser();
-
-			}
-		})
-	}
+		method:'POST',
+		body:x
+	})
+	.then(response =>{return response.json();
+	})
+	.then(function(response) {
+		if(response.error!=null)
+		alert("User registered with a different password");
+		else{
+			loginFunc();
+			getUser();
+		}
+	})
 }
-console.log(mypieces[1],mypieces[2],mypieces[3]);
-var game_id;
+}
+
 function join(){
+	limpar();
 	var group = 12;
-	var nome = document.getElementById("user").value;
 	var pass = document.getElementById("pass").value;
 	if ((nome!="")&&(pass!="")){
 		var x = JSON.stringify({group:group,nick:nome,pass:pass});
 		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/join', {
-			method:'POST',
-			body:x
-		})
-		.then(response=>{console.log(response);return response.json();
-		})
-		.then(function(response) {
-			if(response.error!=null)
-				alert("Pairing error");
-			else {
-				mypieces = response.hand;
-				update(nome,response.game);
-				game_id = response.game;
-				alert("coisas");
-			}
-		})
-	}
-}
-
-function notify(game_id){
-	var nome = document.getElementById("user").value;
-	var pass = document.getElementById("pass").value;
-	var x = JSON.stringify({nick:nome,pass:pass, piece:null});
-	fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
 		method:'POST',
-		body: x
+		body:x
 	})
 	.then(response=>{console.log(response);return response.json();
 	})
 	.then(function(response) {
-		alert("coisas");
+		if(response.error!=null)
+			alert("Pairing error");
+		else {
+			console.log("tou aqui");
+			disappear2();
+			start2();
+			for (let j=0; j<response.hand.length; j++){
+				this.mypieceson[j][0] = response.hand[j][0];
+				this.mypieceson[j][1] = response.hand[j][1];
+			}
+			game_id = response.game;
+			maxonline(this.mypieceson);
+			update();
+			tabuleiro_on();
+			alert("coisas");
+		}
 	})
-  }
+}
+}
+
+function notify(){
+	var pass = document.getElementById("pass").value;
+	
+	if (piece == null ) {
+		var x = JSON.stringify({nick:nome,pass:pass,game:game_id,piece:null});
+		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
+			method: 'POST',
+			body: x
+		})
+			.then(response => {
+				console.log(response); return response.json();
+			})
+			.then(function (response) {
+				alert("pedi peca");
+			})
+	}
+	else {
+		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id, piece: piece })
+		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
+			method: 'POST',
+			body: x
+		})
+			.then(response => {
+				console.log(response); return response.json();
+			})
+			.then(function (response) {
+				alert("tentei");
+			})
+	}
+}
 
 console.log (game_id);
-console.log(mypieces[1],mypieces[2],mypieces[3]);
+console.log(this.mypieceson[1],this.mypieceson[2],this.mypieceson[3]);
 var estado = "inicia";
-function update(nick,game_id){
+function update(){
+	
 	if(estado == "inicia"){
-	  evtSource = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=" + nick + "&game=" + game_id);
-	  evtSource.onmessage = function(event){
-		const data1 = JSON.parse(event.data);
-		//vez_jogar(data1.turn);
-		if(data1.turn == nick){
-		  var coluna = data1.column;
-		  //jogada(coluna,"adversario");
+		evtSource = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=" + nome + "&game=" + game_id);
+		evtSource.onmessage = function(event){
+			const data1 = JSON.parse(event.data);
+			if(data1.turn == nome){
+				console.log(data1);
+				jogar();
+			}
+			if(data1.winner != null){
+				alert(data1.winner + " ganhou!");
+				estado = "acaba";
+				update();
+			}
 		}
-		if(data1.winner != null){
-		  alert(data1.winner + " ganhou!");
-		  update("acaba",game_id);
-		  //reiniciar();
-		}
-	  }
 	}
-	else if(estado == "acaba"){
-	  evtSource.close();
+	else {
+		evtSource.close();
 	}
-  }
+}
 
-  function desistir(){
-	var nome = document.getElementById("user").value;
+function desistir(){
 	var pass = document.getElementById("pass").value;
 	var url = "http://twserver.alunos.dcc.fc.up.pt:8008/leave";
 	var desiste = JSON.stringify({game:game_id , nick:nome , pass:pass});
 	fetch(url,{method:'POST',body:desiste}).
-	  then(response=>{
+	then(response=>{
 		return response.json();
-	  }).
-	  then(function(data) {
+	}).
+	then(function(data) {
 		if(data.error==null)
-		  game_id=0;
-		  //reiniciar();
-	  })
-  }
+		game_id=0;
+	})
+}
 

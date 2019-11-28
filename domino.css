@@ -362,3 +362,48 @@ td, th {
   margin-top: 14%;
   color:white;
 }
+
+#forfeit2{
+  display: none;
+}
+
+.botoesonline{
+  background-color: #55552b;
+  border: none;
+  color: white;
+  height: 50px;
+  width: 110px;
+  display: inline-block;
+  justify-content: center;
+  align-content: center;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#BoardOnline{
+  display:none;
+  float:left;
+  background: url("https://www.xpgameplus.com/games/mahjongunlimited/inc/background6.jpg");
+  border-radius: 8px;
+  height: 720px;
+  width: 1000px;
+  margin: 20px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  display: none;
+}
+#PlayerHand2 {
+  visibility: visible;
+  text-align: center;
+  font-size: 60px;
+  margin-top: 1%;
+  color:white;
+}
+#Board2{
+  font-size: 400%;
+  display:block;
+  text-align: center;
+  margin-top:10%;
+  color:white;
+  white-space: nowrap;
+}

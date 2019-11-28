@@ -125,6 +125,7 @@ function disappear(){
 
 }
 
+
 function giveGame(){
   var giveUp = document.getElementById("forfeit");
 
