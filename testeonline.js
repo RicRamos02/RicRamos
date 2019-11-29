@@ -15,10 +15,12 @@ function limpar(){
 }
 
 function passTurn2(){
-    skip="passar";
+	skip="passar";
+	notify();
 }
 function pedirpeca() {
 	piece = null;
+	notify();
 }
 
 function disappear2(){
@@ -81,17 +83,28 @@ function jogardep(idpeca) {
 	document.getElementById("PlayerHand2").removeChild(peca);
 }
 
-function printboard(){
-	for (let i = 0; i < tabul.length; i++) {
+function printboard(tab_recebido){
+	console.log(tab_recebido)
+	var filhos = document.getElementById("Board2").childNodes;
+	for (let i=0; i<filhos.length; i++) {
+		document.getElementById("Board2").removeChild(filhos[i]);
+	}	
+	document.getElementById("Board2").innerHTML="";
+	for (let i = 0; i < tab_recebido.length; i++) {
 		var boas2 = document.createElement("span");
-		let z = tabul[i][0];
-		let w = tabul[i][1];
-		let cod = 127025 + z * 7 + w;
+		let z = tab_recebido[i][0];
+		let w = tab_recebido[i][1];
+		let cod;
+		if (tab_recebido[i][0]==tab_recebido[i][1])
+			cod = 127075 + z * 7 + w;
+		else
+			cod = 127025 + z * 7 + w;
 		if (!isNaN(cod)){
-			boas2.innerHTML = "&#" + this.cod;
+			boas2.innerHTML = "&#" + cod;
 			document.getElementById("Board2").appendChild(boas2);
 		}
 	}
+	
 }
 
 function tabuleiro_on(){
@@ -108,17 +121,17 @@ function tabuleiro_on(){
 	 }
 }
 
-function esq() {
+function esquerda() {
 	side = "start";
-	document.getElementById("esq").style.display = "none";
-	document.getElementById("dir").style.display = "none";
+	document.getElementById("esquerda").style.display = "none";
+	document.getElementById("direita").style.display = "none";
 	notify();
 }
 
-function dir() {
+function direita() {
 	side = "end";
-	document.getElementById("esq").style.display = "none";
-	document.getElementById("dir").style.display = "none";
+	document.getElementById("esquerda").style.display = "none";
+	document.getElementById("direita").style.display = "none";
 	notify();
 }
 
@@ -174,9 +187,10 @@ function registo () {
 }
 }
 
+var game_id = 0;
 function join(){
 	limpar();
-	var group = 12;
+	var group = 1234567654321;
 	var pass = document.getElementById("pass").value;
 	if ((nome!="")&&(pass!="")){
 		var x = JSON.stringify({group:group,nick:nome,pass:pass});
@@ -190,7 +204,6 @@ function join(){
 		if(response.error!=null)
 			alert("Pairing error");
 		else {
-			console.log("tou aqui");
 			disappear2();
 			start2();
 			for (let j=0; j<response.hand.length; j++){
@@ -229,7 +242,6 @@ function notify(){
 			})*/
 	}
 	else {
-		console.log(piece);
 		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id, piece: piece, side: side })
 		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
 			method: 'POST',
@@ -241,43 +253,49 @@ function notify(){
 			.then(function (response) {
 				if (response.side != null) {
 					document.getElementById("warnings2").innerHTML = escolhelado;
-					document.getElementById("esq").style.display = "block";
-					document.getElementById("dir").style.display = "block";
+					document.getElementById("esquerda").style.display = "block";
+					document.getElementById("direita").style.display = "block";
 				}
+				if (response.error == "Tile fits neither side")
+					document.getElementById("warnings2").innerHTML = "Não podes jogar essa peça!";
+				else if (response.error != "Tile fits neither side" && response.error != null)
+					document.getElementById("warnings2").innerHTML = "Não é a tua vez!";
 				alert("tentei jogar");
-				printboard();
 			})
 	}
 }
 
 function update(){
-	if(estado == "inicia"){
 		evtSource = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=" + nome + "&game=" + game_id);
 		evtSource.onmessage = function(event){
+			console.log("teste")
 			const data1 = JSON.parse(event.data);
+
+			console.log(data1);
 			if(data1.turn == nome){
+				console.log("teste")
+				console.log("turno" + data1);
 				for (let i=0; i<data1.board.line.length; i++){
 					tabul[i][0] = data1.board.line[i][0];
 					tabul[i][1] = data1.board.line[i][1];
 				}
-				printboard();
+				printboard(data1.board.line);
 				if (num==1)
 					document.getElementById("warnings2").innerHTML = pecamaior;
 				else
 					document.getElementById("warnings2").innerHTML = tuavez;
 			}
-			else if (data1.turn != nome)
+			else if (data1.turn != nome) {
+				console.log("teste")
 				document.getElementById("warnings2").innerHTML = espera;
-			if(data1.winner != null){
-				alert(data1.winner + " ganhou!");
-				estado = "acaba";
-				update();
+				printboard(data1.board.line);
 			}
-		}
-	}
-	else {
-		evtSource.close();
-	}
+			if(data1.winner != null){
+				console.log("teste")
+				alert(data1.winner + " ganhou!");
+				evtSource.close();
+			}
+		} 	 
 }
 
 function desistir(){
@@ -290,9 +308,9 @@ function desistir(){
 	}).
 	then(function(data) {
 		if(data.error==null){
-			game_id=0;
 			estado = "acaba";
 			update();
+			game_id=0;
 		}
 	})
 }
