@@ -20,7 +20,16 @@ function passTurn2(){
 }
 function pedirpeca() {
 	piece = null;
-	notify();
+	var nova = notify();
+	var boas = document.createElement("span");
+	let z = nova[0];
+	let w = nova[1];
+	let cod = 127075 + z * 7 + w;
+	boas.setAttribute("id", "(" + z + w + ")");
+	boas.setAttribute("class", "pecaPlayer");
+	boas.setAttribute("onclick", "jogardep(" + z + w + ")");
+	boas.innerHTML = "&#" + cod;
+	document.getElementById("PlayerHand2").appendChild(boas);
 }
 
 function disappear2(){
@@ -126,6 +135,7 @@ function esquerda() {
 	document.getElementById("esquerda").style.display = "none";
 	document.getElementById("direita").style.display = "none";
 	notify();
+	side = null;
 }
 
 function direita() {
@@ -133,6 +143,7 @@ function direita() {
 	document.getElementById("esquerda").style.display = "none";
 	document.getElementById("direita").style.display = "none";
 	notify();
+	side = null;
 }
 
 
