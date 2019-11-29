@@ -415,3 +415,11 @@ td, th {
   text-align: center;
   color: white;
 }
+
+#esq{
+  display: none;
+}
+
+#dir{
+  display: none;
+}

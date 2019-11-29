@@ -82,13 +82,12 @@ function jogardep(idpeca) {
 }
 
 function printboard(){
-	console.log(tabul[1],tabul[2],tabul[3]);
-	if (tabul[0][0] != 35) {
-		for (let i = 0; i < tabul.length; i++) {
-			var boas2 = document.createElement("span");
-			let z = tabul[i][0];
-			let w = tabul[i][1];
-			let cod = 127025 + z * 7 + w;
+	for (let i = 0; i < tabul.length; i++) {
+		var boas2 = document.createElement("span");
+		let z = tabul[i][0];
+		let w = tabul[i][1];
+		let cod = 127025 + z * 7 + w;
+		if (!isNaN){
 			boas2.innerHTML = "&#" + cod;
 			document.getElementById("Board2").appendChild(boas2);
 		}
@@ -108,6 +107,21 @@ function tabuleiro_on(){
  		document.getElementById("PlayerHand2").appendChild(boas);
 	 }
 }
+
+function esq() {
+	side = "start";
+	document.getElementById("esq").style.display = "none";
+	document.getElementById("dir").style.display = "none";
+	notify();
+}
+
+function dir() {
+	side = "end";
+	document.getElementById("esq").style.display = "none";
+	document.getElementById("dir").style.display = "none";
+	notify();
+}
+
 
 
 
