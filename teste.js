@@ -2,6 +2,7 @@ var game_id = 0;
 var skip;
 var piece;
 var nome;
+var side = null;
 var array=[];
 array.length=28;
 var aux=0;
@@ -18,6 +19,12 @@ for (let i=0; i<tabul.length; i++) {
 }
 tabul[0][0] = 35;
 
+
+var escolhelado = "Escolhe o lado que queres jogar a peca."
+var pecamaior = "Tens a maior peca do jogo, joga-a!"
+var tuavez = "É a tua vez!"
+var espera = "É a vez do teu adversário!"
+var estado = "inicia";
 
 class Piece {
 	constructor(left, right) {
@@ -768,7 +775,8 @@ function notify(){
 			})*/
 	}
 	else {
-		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id, piece: piece })
+		console.log(piece);
+		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id, piece: piece, side: side })
 		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
 			method: 'POST',
 			body: x
@@ -777,13 +785,17 @@ function notify(){
 				console.log(response); return response.json();
 			})
 			.then(function (response) {
-				alert("tentei");
+				if (response.side != null) {
+					document.getElementById("warnings2").innerHTML = escolhelado;
+					document.getElementById("esq").style.display = "block";
+					document.getElementById("dir").style.display = "block";
+				}
+				alert("tentei jogar");
+				printboard();
 			})
 	}
 }
 
-var pecamaior = "Tens a maior peca do jogo, joga-a!"
-var estado = "inicia";
 function update(){
 	if(estado == "inicia"){
 		evtSource = new EventSource("http://twserver.alunos.dcc.fc.up.pt:8008/update?nick=" + nome + "&game=" + game_id);
@@ -794,10 +806,14 @@ function update(){
 					tabul[i][0] = data1.board.line[i][0];
 					tabul[i][1] = data1.board.line[i][1];
 				}
-				console.log(tabul[1],tabul[2],tabul[3]);
 				printboard();
-				document.getElementById("warnings2").innerHTML = pecamaior;
+				if (num==1)
+					document.getElementById("warnings2").innerHTML = pecamaior;
+				else
+					document.getElementById("warnings2").innerHTML = tuavez;
 			}
+			else if (data1.turn != nome)
+				document.getElementById("warnings2").innerHTML = espera;
 			if(data1.winner != null){
 				alert(data1.winner + " ganhou!");
 				estado = "acaba";
