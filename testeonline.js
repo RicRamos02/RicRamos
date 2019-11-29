@@ -88,7 +88,7 @@ function printboard(){
 		let z = tabul[i][0];
 		let w = tabul[i][1];
 		let cod = 127075 + z * 7 + w;
-		//console.log("COD", cod);
+		console.log("COD", cod);
 		if(!isNaN(cod)){
 			boas2.innerHTML = "&#" + cod;
 			document.getElementById("Board2").appendChild(boas2);

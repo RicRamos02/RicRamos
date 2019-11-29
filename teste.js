@@ -14,8 +14,9 @@ var hispieces=[];
 var tabu=[];
 var tabul=new Array(7);
 for (let i=0; i<tabul.length; i++) {
-    tabul[i] = new Array(2);
+	tabul[i] = new Array(2); 
 }
+tabul[0][0] = 35;
 
 
 class Piece {
