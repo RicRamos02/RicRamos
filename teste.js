@@ -756,10 +756,15 @@ function notify(){
 			.then(response => {
 				console.log(response); return response.json();
 			})
-			.then(function (response) {
+			.then(data => {
+				
+				console.log("data", data);
+			})
+			/*.then(function (response) {
+			
 				alert("pedi peca");
 				printboard();
-			})
+			})*/
 	}
 	else {
 		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id, piece: piece })
