@@ -1,4 +1,4 @@
-var skip;
+var skip = null;
 var piece;
 var nome;
 var side = null;
@@ -16,7 +16,7 @@ var tabul=new Array(28);
 for (let i=0; i<tabul.length; i++) {
 	tabul[i] = new Array(2); 
 }
-
+var num = 1;
 
 var escolhelado = "Escolhe o lado que queres jogar a peca."
 var pecamaior = "Tens a maior peca do jogo, joga-a!"
@@ -24,7 +24,7 @@ var tuavez = "É a tua vez!"
 var espera = "É a vez do teu adversário!"
 var estado = "inicia";
 
-class Piece {
+/*class Piece {
 	constructor(left, right) {
 		this.left = left;
 		this.right = right;
@@ -665,7 +665,7 @@ function passTurn(){
 	document.getElementById("buttonPass").style.display = "none";
 	PCturn();
 }
-
+*/
 
 
 

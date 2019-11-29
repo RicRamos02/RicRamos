@@ -1,3 +1,5 @@
+
+
 //Começar o jogo online
 function start2(){
 	document.getElementById("startGame2").style.display="none";
@@ -17,10 +19,14 @@ function limpar(){
 function passTurn2(){
 	skip="passar";
 	notify();
+	skip=null;
 }
 function pedirpeca() {
 	piece = null;
-	var nova = notify();
+	notify();
+}
+
+function mostrarpeca(nova) {
 	var boas = document.createElement("span");
 	let z = nova[0];
 	let w = nova[1];
@@ -62,7 +68,7 @@ function maxonline(array) {
 	}
 	console.log(pos);
 }
-var num = 1;
+
 function jogar() {
 	if (num == 1){
 		piece = mypieceson[pos];
@@ -74,7 +80,7 @@ function jogar() {
 		notify();
 	}
 }
-
+console.log(piece)
 function jogardep(idpeca) {
 	var filhos;
 	filhos = document.getElementById("PlayerHand2").childNodes;
@@ -86,6 +92,7 @@ function jogardep(idpeca) {
 		}
 	}
 	piece=mypieceson[tira];
+	console.log(piece)
 	notify();
 	console.log(mypieceson[tira]);
 	var peca = filhos[tira];
@@ -192,7 +199,6 @@ function registo () {
 		alert("User registered with a different password");
 		else{
 			loginFunc();
-			getUser();
 		}
 	})
 }
@@ -240,28 +246,37 @@ function notify(){
 			body: x
 		})
 			.then(response => {
-				console.log(response); return response.json();
+				return response.json();
 			})
 			.then(data => {
-				
-				console.log("data", data);
+				console.log("Entrei no notify na parte de pedir ao monte")
+				mostrarpeca(data.piece);
 			})
-			/*.then(function (response) {
-			
-				alert("pedi peca");
-				printboard();
-			})*/
 	}
-	else {
-		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id, piece: piece, side: side })
+	else if (skip != null) {
+		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id, piece: piece, side: side, skip: skip })
 		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
 			method: 'POST',
 			body: x
 		})
 			.then(response => {
-				console.log(response); return response.json();
+				return response.json();
 			})
 			.then(function (response) {
+				console.log("Passei a vez")
+			})
+	}
+	else {
+		var x = JSON.stringify({ nick: nome, pass: pass, game: game_id, piece: piece, side: side})
+		fetch('http://twserver.alunos.dcc.fc.up.pt:8008/notify', {
+			method: 'POST',
+			body: x
+		})
+			.then(response => {
+				return response.json();
+			})
+			.then(function (response) {
+				console.log("Entrei no notify na parte de jogar uma peça")
 				if (response.side != null) {
 					document.getElementById("warnings2").innerHTML = escolhelado;
 					document.getElementById("esquerda").style.display = "block";
